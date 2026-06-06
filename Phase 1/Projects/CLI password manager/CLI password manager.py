@@ -56,12 +56,23 @@ def create_master_password(master_password):
 
     return K
 
+# def check():
+
 
 if __name__ == "__main__":
+    path=pathlib.Path("Phase 1/Projects/CLI password manager/password.json")
+    with path.open("r") as f:
+        data = f.read()
+        print(data)
+    if data:
+        pass
+    else:
+        create_master_password("dawood")
     
-    # create_master_password("dawood")
-    p_m = password_manager()
+    
+    # p_m = password_manager()
+    
     # p_m.add_password("google", "Smart@1122")
 
-    print(p_m.search("google"))
+    # print(p_m.search("google"))
     
