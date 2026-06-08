@@ -4,10 +4,16 @@ import hashlib
 import base64
 import pathlib
 import json
+
+SCRIPT_DIR = pathlib.Path(__file__).parent.resolve()
+FILE_PATH = SCRIPT_DIR / "password.json"
+
+
+
 class password_manager:
     def __init__(self,account):
         self.account = account
-        self.path=pathlib.Path("Phase 1/Projects/CLI password manager/password.json")
+        self.path=FILE_PATH
         master_key = self.read_data_json()[self.account]["master key"]
         self.master_key=Fernet(master_key)
 
@@ -84,7 +90,7 @@ class password_manager:
 
 
 
-path=pathlib.Path("Phase 1/Projects/CLI password manager/password.json")
+path=FILE_PATH
 
 def read():
     try: 
