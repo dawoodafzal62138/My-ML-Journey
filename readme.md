@@ -7,7 +7,7 @@ Each folder in this repository is a completely standalone project.
 ## 📂 Project Directory
 
 ### 🌱 Fundamentals
-* **[CLI Password Manager](./CLI%20password%20manager)** - A secure, terminal-based password manager using local Fernet encryption.
+* **[CLI Password Manager](./Phase%201/Projects/CLI%20password%20manager)** - A secure, terminal-based password manager using local Fernet encryption.
 
 
 
