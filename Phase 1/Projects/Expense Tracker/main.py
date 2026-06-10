@@ -18,11 +18,6 @@ class expense_tracker:
     def __init__(self):
         self.path  = FILE_PATH
 
-
-
-
-
-
     def write_csv(self , date , type , amount , category , description ):
         with self.path.open("a", newline="") as f:
 
@@ -31,60 +26,29 @@ class expense_tracker:
            
             csv_writer.writerow(text)
 
-
-
-
-
-
-    def add_income(self , date , amount , category , description):
-        type = "income"
-        self.write_csv(date, type , amount, category,description)    
-    
-
-
-
-    def add_expense(self , date , amount , category , description):
-        type = "expense"
+    def add_expense_income(self, date, type , amount , category , description):
         self.write_csv(date, type , amount, category,description)    
 
-
-
-
-
-
-
-    def list_expenses(self):
+    def list_incomes(self, type = "all" ):
+        list_payments=[]
         with self.path.open("r" ,newline="") as f :
             csv_reader = csv.DictReader(f , HEADERS ,delimiter=",")
-            next(csv_reader)
+            # next(csv_reader)
             for line in csv_reader:
-                if line["type"] == "expense":
-                    print(line)
-    
-    
-    def list_incomes(self):
-        with self.path.open("r" ,newline="") as f :
-            csv_reader = csv.DictReader(f , HEADERS ,delimiter=",")
-            next(csv_reader)
-            for line in csv_reader:
-                if line["type"] == "income":
-                    print(line)
+                if type == "all":
+                    
+                    yield list(line.values())
+                else:
+                    if line["type"].lower() == type.lower().strip():
+                        yield list(line.values())
+
                
 
 
-    def edit_expense(self):
-        pass 
-
-
-    
-    
-    def delete_expense(self):
-        pass
-
-    
-    
     def monthly_report(self):
-        pass
+            pass
+    
+
 
 
 
@@ -121,8 +85,6 @@ income_categories = [
     "Other Income"
 ]
 
-
-
 expense_categories = [
     "Food",
     "Transport",
@@ -143,13 +105,8 @@ expense_categories = [
 ]
 
 
-
-
-if __name__ =="__main__":
-    exp = expense_tracker()
-
-    # for _ in range(100): 
-    #     exp.add_expense(datetime.datetime.now() ,random.randint(1000,10000) , random.choice(expense_categories) ,  "")
-    #     exp.add_income(datetime.datetime.now() ,random.randint(1000,10000) , random.choice(income_categories) ,  "")
-    # exp.list_expenses()
-    exp.list_incomes()
+exp = expense_tracker()
+# for _ in range(100): 
+#         exp.add_expense(datetime.datetime.now() ,random.randint(1000,10000) , random.choice(expense_categories) ,  "")
+# #         exp.add_income(datetime.datetime.now() ,random.randint(1000,10000) , random.choice(income_categories) ,  "")
+# print(list(exp.list_incomes()))
