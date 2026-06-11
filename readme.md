@@ -9,5 +9,8 @@ Each folder in this repository is a completely standalone project.
 ### 🌱 Fundamentals
 * **[CLI Password Manager](./Phase%201/Projects/CLI%20password%20manager)** - A secure, terminal-based password manager using local Fernet encryption.
 
+* **[Expense Tracker](./Phase%201/Projects/Expense%20Tracker)** - A modern, easy-to-use desktop application built with Python and **CustomTkinter** that helps you track your daily income and expenses, calculate your net balance, and view your financial history.
+ 
+
 
 
