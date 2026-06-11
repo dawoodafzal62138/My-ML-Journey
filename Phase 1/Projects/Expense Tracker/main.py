@@ -3,7 +3,7 @@ import customtkinter as tk
 
 SCRIPT_DIR = pathlib.Path(__file__).parent.resolve()
 FILE_PATH = SCRIPT_DIR / "expenses.csv"
-HEADERS=[ "date" , "type" , "amount" , "category" , "description"]
+HEADERS=[ "Date" , "Type" , "Amount" , "Category" , "Description"]
 
 if not FILE_PATH.exists():
     FILE_PATH.touch()
@@ -21,7 +21,7 @@ class expense_tracker:
     def write_csv(self , date , type , amount , category , description ):
         with self.path.open("a", newline="") as f:
 
-            text={"date" : date, "type": type , "amount" : amount, "category" : category, "description": description}
+            text={"Date" : date, "Type": type , "Amount" : amount, "Category" : category, "Description": description}
             csv_writer= csv.DictWriter(f, fieldnames= HEADERS, delimiter=",")
            
             csv_writer.writerow(text)
@@ -30,24 +30,46 @@ class expense_tracker:
         self.write_csv(date, type , amount, category,description)    
 
     def list_incomes(self, type = "all" ):
-        list_payments=[]
         with self.path.open("r" ,newline="") as f :
-            csv_reader = csv.DictReader(f , HEADERS ,delimiter=",")
-            # next(csv_reader)
+            csv_reader = csv.DictReader(f , delimiter=",")
+            yield list(csv_reader.fieldnames)
             for line in csv_reader:
-                if type == "all":
+                if type.lower() == "all":
                     
                     yield list(line.values())
                 else:
-                    if line["type"].lower() == type.lower().strip():
+                    if line["Type"].lower() == type.lower().strip():
                         yield list(line.values())
 
                
 
 
-    def monthly_report(self):
-            pass
-    
+    def summary (self):
+        expenses= 0
+        income= 0
+        
+        try:
+            with self.path.open("r" ,newline="") as f :
+                csv_reader = csv.DictReader(f , HEADERS ,delimiter=",")
+                next(csv_reader)
+                for line in csv_reader:
+                    if line["Type"].lower() == "income":
+                        income += float(line["Amount"])
+                    elif line["Type"].lower() == "expense":
+                        expenses += float(line["Amount"])
+        except :
+            pass 
+                    
+                    
+          
+        return income , expenses , income - expenses
+
+
+
+
+
+
+
 
 
 
