@@ -18,3 +18,8 @@ Follow these steps to set up and play the game on your local machine.
 ### 1. Prerequisites
 Make sure you have **Python 3.8+** installed on your computer. You will also need to get a free Gemini API key from [Google AI Studio](https://aistudio.google.com/).
 
+### 2. Run
+Run the Python script:
+```bash
+python main.py
+```
