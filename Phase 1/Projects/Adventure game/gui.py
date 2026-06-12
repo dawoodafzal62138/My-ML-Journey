@@ -5,7 +5,7 @@ class gui:
         self.app = CTk()
         self.app.minsize(1100 , 700)
         self.app.resizable(False ,False)
-        # self.__api_key =
+        self.__api_key =""
         self.main_window()
 
 
@@ -20,12 +20,12 @@ class gui:
         title_label = self.label("Text-Based Adventure Game ! ", 0.5 , 0.1 ,self.app , font = CTkFont("seogi UI", 40 ,"bold") ,text_color="#EAEAEA")
 
 
-        text_box = self.textarea(800 ,400, 0.5,0.45 ,self.app ,border_color = "#3C3C3C", border_width = 3 ,corner_radius= 10 , bg_color="#252526" ,text_color="#1BD53A" , font=CTkFont(family="Segoe UI Emoji", size=14) ,wrap ="word")
+        text_box = self.textarea(800 ,475, 0.5,0.50 ,self.app ,border_color = "#3C3C3C", border_width = 3 ,corner_radius= 10 , bg_color="#252526" ,text_color="#1BD53A" , font=CTkFont(family="Segoe UI Emoji", size=14) ,wrap ="word")
         
 
-        entry_bar = self.entry(650, 50 ,"Enter your Choice" , 0.432 ,0.8 ,self.app , fg_color= "#2B2B2B" ,text_color = "#FFFFFF" ,border_width =3 , corner_radius =10 ,border_color ="#3C3C3C" ,font = CTkFont("Seogi UI" ,20  ,weight= "bold" ) , placeholder_text_color ="#555555")
+        entry_bar = self.entry(650, 50 ,"Enter your Choice" , 0.432 ,0.9 ,self.app , fg_color= "#2B2B2B" ,text_color = "#FFFFFF" ,border_width =3 , corner_radius =10 ,border_color ="#3C3C3C" ,font = CTkFont("Seogi UI" ,20  ,weight= "bold" ))
 
-        enter_button= self.button(130 ,50 ,"Enter" , 0.805 ,0.8 ,self.app ,fg_color ="#252526"  ,text_color="#FFFFFF" ,border_width = 3 ,border_color="#3C3C3C", corner_radius = 10,font = CTkFont("Seogi UI" ,20  ,weight= "bold" ), hover_color= "#39FF14")
+        enter_button= self.button(130 ,50 ,"Enter" , 0.805 ,0.9 ,self.app ,fg_color ="#222222"  ,text_color="#39FF14" ,border_width = 3 ,border_color="#3C3C3C", corner_radius = 10,font = CTkFont("Seogi UI" ,20  ,weight= "bold" ), hover_color= "#333333")
 
         text_box.insert(index=0.0 ,text="""🎮 NEW ADVENTURE
 🎭 Genre:
