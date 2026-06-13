@@ -12,6 +12,8 @@ Each folder in this repository is a completely standalone project.
 * **[Expense Tracker](./Phase%201/Projects/Expense%20Tracker)** - A modern, easy-to-use desktop application built with Python and **CustomTkinter** that helps you track your daily income and expenses, calculate your net balance, and view your financial history.
 
 * **[Adventure Game](./Phase%201/Projects/Adventure%20game/)** A modern, responsive, and highly customizable text-based adventure game engine built with Python and custom tkinter.
+
+* **[Automated File Organizer](./Phase%201/Projects/Automated%20File%20Organizer/)** A smart, fast, and interactive command-line tool built in Python to automatically sort and organize your cluttered folders. It categorizes files based on their extensions, provides a visual tree view of your directories, and keeps a detailed log of all file movements.
  
 
 
