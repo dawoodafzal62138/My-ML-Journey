@@ -59,38 +59,98 @@ class profile_analyzer:
 
 
     def calculate_repository_stats(self):
-        pass
+        repos_url = self.url + f"users/{self.username}/repos"
+        response = self.get_response(repos_url)
+        for index ,repo in enumerate(response , start= 1):
+            print("\n" + "=" * 60)
+            print(f"GITHUB REPOSITORY {index} REPORT")
+            print("=" * 60)
 
+            # Repository Information
+            print("\n[ Repository Information ]")
+            print(f"Repository Name     : {repo['name']}")
+            print(f"Full Name           : {repo['full_name']}")
+            print(f"Description         : {repo['description'] or 'Not Provided'}")
+            print(f"Owner               : {repo['owner']['login']}")
+            print(f"Visibility          : {repo['visibility'].title()}")
+            print(f"Primary Language    : {repo['language']}")
+            print(f"Default Branch      : {repo['default_branch']}")
+            print(f"Repository Size     : {repo['size']} KB")
 
-    def get_repository_languages(self, repo_name):
-        pass
+            # URLs
+            print("\n[ Repository Links ]")
+            print(f"GitHub URL          : {repo['html_url']}")
+            print(f"Clone URL           : {repo['clone_url']}")
+            print(f"SSH URL             : {repo['ssh_url']}")
 
-    def language_stats(self):
-        pass
+            # Activity Information
+            print("\n[ Activity ]")
+            print(f"Created On          : {repo['created_at'].split('T')[0]}")
+            print(f"Last Updated        : {repo['updated_at'].split('T')[0]}")
+            print(f"Last Push           : {repo['pushed_at'].split('T')[0]}")
+
+            # Statistics
+            print("\n[ Statistics ]")
+            print(f"Stars               : {repo['stargazers_count']}")
+            print(f"Watchers            : {repo['watchers_count']}")
+            print(f"Forks               : {repo['forks_count']}")
+            print(f"Open Issues         : {repo['open_issues_count']}")
+
+            # Features
+            print("\n[ Features ]")
+            print(f"Issues Enabled      : {repo['has_issues']}")
+            print(f"Projects Enabled    : {repo['has_projects']}")
+            print(f"Wiki Enabled        : {repo['has_wiki']}")
+            print(f"Pages Enabled       : {repo['has_pages']}")
+            print(f"Discussions Enabled : {repo['has_discussions']}")
+
+            # Repository Status
+            print("\n[ Status ]")
+            print(f"Archived            : {repo['archived']}")
+            print(f"Disabled            : {repo['disabled']}")
+            print(f"Template Repository : {repo['is_template']}")
+            print(f"Forked Repository   : {repo['fork']}")
+
+            print("=" * 60 +"\n\n")
+
 
     def analyze_commits(self):
-        pass
+        repos_url = self.url + f"users/{self.username}/repos"
+        response = self.get_response(repos_url)
+        for index  ,  repo in enumerate(response ,start=1):
+            repo_name = repo["name"]
+            repo_url = repo["commits_url"][:-6]
+            repo_commits =  self.get_response(repo_url)
+            print("\n" + "=" * 60)
+            print(f"{index}.  📦{repo_name}")
+            print("=" * 60)
+
+            print(f"\nTotal Commits : {len(repo_commits)}")
+
+            print("\nRecent Activity")
+            print("-" * 15)
+            for commit in repo_commits:
+                sha =commit["sha"]
+                message= commit["commit"]["message"]
+                date= commit["commit"]["author"]["date"]
+                print(f"[{sha}] {date}  {message}")
+            print("=" * 60+"\n\n")
 
 
 def get_username():
     pass
 
 
-# url="https://api.github.com/users/dawoodafzal62138/repos"
 url="https://api.github.com/"
 
 
 
-r= requests.get(url,headers=HEADERS).json()
 
-
-# with PATH.open("w") as f:
-#     json.dump(r , f, indent=4 )
 
 
 
 
 if __name__ == "__main__":
     pa= profile_analyzer("dawoodafzal62138", PATH , url , HEADERS)
-    pa.get_user_profile()
-
+    # pa.calculate_repository_stats()
+    pa.analyze_commits()
