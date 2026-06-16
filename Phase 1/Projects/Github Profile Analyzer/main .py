@@ -2,33 +2,45 @@ import os
 import pathlib
 import json
 import requests
-import time
 from dotenv import load_dotenv
 from halo import Halo
 from google import genai
-
+from google.genai import errors
+import sys
+import time
 
 load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GEMINI_API  = os.getenv("GEMINI_API")
+base_url="https://api.github.com/"
+PATH = pathlib.Path(__file__).parent.resolve() / "reports.json"
+prompt_path = pathlib.Path(__file__).parent.resolve() / "prompt.txt"
+with prompt_path.open("r") as f :
+    prompt = f.read()
+
+
 HEADERS = { 
     "Accept": "application/vnd.github+json",
     "Authorization": f"Bearer {GITHUB_TOKEN}",
     "X-GitHub-Api-Version": "2026-03-10"
    }
-PATH = pathlib.Path(__file__).parent.resolve() / "reports.json"
-
 
     
-    
-    
 
+def typewriter(text):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.001)    
+    print()
 
 class profile_analyzer:
-    def __init__(self, username , Path , Url  , HEADERS):
+    def __init__(self, username , Path , Url  , HEADERS , system_prompt):
         self.path = Path
         self.url=Url
         self.username= username
         self.HEADERS=HEADERS
+        self.system_prompt= system_prompt
 
         
 
@@ -194,7 +206,7 @@ class profile_analyzer:
 
 
             top_projects = []
-            languages_summary ={}
+            languages_summary =[]
             if len(repo_response) > 5:
                 for repo  in repos_sorted[:5]:
                     url = repo["commits_url"][:-5]
@@ -204,7 +216,7 @@ class profile_analyzer:
                     url = repo["languages_url"]
                     language_response = self.get_response(url)
                     for key , value in language_response.items():
-                        languages_summary[key] = value
+                       languages_summary.append({key: value})
             else:
                 for repo  in repo_response:
                     url = repo["commits_url"][:-5]
@@ -214,20 +226,37 @@ class profile_analyzer:
                     url = repo["languages_url"]
                     language_response = self.get_response(url)
                     for key , value in language_response.items():
-                        languages_summary[key] = value
+                        languages_summary.append({key : value})
         spinner.stop()
       
         
-        
-        
       
+        if profile_summary  and languages_summary and top_projects: 
+            spinner = Halo("Thinking" , "cyan" , spinner="dots8")
+            spinner.start()
+            data = {"profile_summary" : profile_summary , "languages_summary" : languages_summary, "top_projects": top_projects}
+            text = self.AI_response(data)
+            spinner.stop()
+            typewriter(text)
+
+
+    def AI_response(self ,data):
+        try:
+            client = genai.Client(api_key=GEMINI_API)
+            session = client.chats.create(model ="gemini-3.1-flash-lite" , config={"system_instruction": self.system_prompt})
+            response = session.send_message(str(data))
+            return response.text
+        except errors.ClientError as e:
+            return f"Error: {e}"
+
+
 
 
 def get_username():
     pass
 
 
-base_url="https://api.github.com/"
+
 
 
 
@@ -237,7 +266,7 @@ base_url="https://api.github.com/"
 
 
 if __name__ == "__main__":
-    pa= profile_analyzer("dawoodafzal62138", PATH , base_url , HEADERS)
+    pa= profile_analyzer("dawoodafzal62138", PATH , base_url , HEADERS , prompt)
     # pa.calculate_repository_stats()
     # pa.analyze_commits()
     pa.AI_summary()
