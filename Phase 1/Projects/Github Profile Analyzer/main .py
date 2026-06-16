@@ -2,7 +2,10 @@ import os
 import pathlib
 import json
 import requests
+import time
 from dotenv import load_dotenv
+from halo import Halo
+from google import genai
 
 
 load_dotenv()
@@ -15,6 +18,9 @@ HEADERS = {
 PATH = pathlib.Path(__file__).parent.resolve() / "reports.json"
 
 
+    
+    
+    
 
 
 class profile_analyzer:
@@ -157,11 +163,71 @@ class profile_analyzer:
         else:
             print("An Unexpected error occurred ! ")
 
+
+
+
+    def AI_summary(self):
+        spinner = Halo("Fetching Data", color="cyan" , spinner="dots2") 
+        spinner.start()
+        url= self.url + f"users/{self.username}"
+        response = self.get_response(url)
+        url = self.url + f"users/{self.username}/repos"
+        repo_response = self.get_response(url)
+        profile_summary={}
+        if response:
+            profile_summary = {
+            "Name" :response["name"],
+            "bio" : response["bio"],
+            "followers": response["followers"],
+            "following" : response["following"],
+            "public_repos": response["public_repos"],
+            "account_created_at" : response["created_at"] ,
+            "last_updated_at" : response["updated_at"],
+            }
+        
+        if repo_response:
+            repos_sorted = sorted(
+            repo_response,
+            key=lambda r: r["stargazers_count"],
+            reverse=True
+            )
+
+
+            top_projects = []
+            languages_summary ={}
+            if len(repo_response) > 5:
+                for repo  in repos_sorted[:5]:
+                    url = repo["commits_url"][:-5]
+                    commit_len = len(self.get_response(url))
+                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"] , "updated_at":repo["updated_at"] , "pushed_at" : repo["pushed_at"]}
+                    top_projects.append(project)
+                    url = repo["languages_url"]
+                    language_response = self.get_response(url)
+                    for key , value in language_response.items():
+                        languages_summary[key] = value
+            else:
+                for repo  in repo_response:
+                    url = repo["commits_url"][:-5]
+                    commit_len = len(self.get_response(url))
+                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"] , "updated_at":repo["updated_at"] , "pushed_at" : repo["pushed_at"]}
+                    top_projects.append(project)
+                    url = repo["languages_url"]
+                    language_response = self.get_response(url)
+                    for key , value in language_response.items():
+                        languages_summary[key] = value
+        spinner.stop()
+      
+        
+        
+        
+      
+
+
 def get_username():
     pass
 
 
-url="https://api.github.com/"
+base_url="https://api.github.com/"
 
 
 
@@ -171,6 +237,7 @@ url="https://api.github.com/"
 
 
 if __name__ == "__main__":
-    pa= profile_analyzer("dawoodafzal62138", PATH , url , HEADERS)
+    pa= profile_analyzer("dawoodafzal62138", PATH , base_url , HEADERS)
     # pa.calculate_repository_stats()
-    pa.analyze_commits()
+    # pa.analyze_commits()
+    pa.AI_summary()
