@@ -1,6 +1,5 @@
 import os
 import pathlib
-import json
 import requests
 from dotenv import load_dotenv
 from halo import Halo
@@ -14,7 +13,6 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GEMINI_API  = os.getenv("GEMINI_API")
 base_url="https://api.github.com/"
 
-PATH = pathlib.Path(__file__).parent.resolve() / "reports.json"
 
 prompt_path = pathlib.Path(__file__).parent.resolve() / "prompt.txt"
 
@@ -38,8 +36,8 @@ def typewriter(text , delay = 0.001):
     print()
 
 class profile_analyzer:
-    def __init__(self, username , Path , Url  , HEADERS , system_prompt):
-        self.path = Path
+    def __init__(self, username , Url  , HEADERS , system_prompt):
+        
         self.url=Url
         self.username= username
         self.HEADERS=HEADERS
@@ -139,8 +137,8 @@ class profile_analyzer:
                 print(f"Forked Repository   : {repo['fork']}")
 
                 print("=" * 60 +"\n\n")
-            else:
-                print("An Unexpected error occurred ! ")
+        else:
+            print("An Unexpected error occurred ! ")
 
     def analyze_commits(self):
         repos_url = self.url + f"users/{self.username}/repos"
@@ -312,7 +310,7 @@ if __name__ == "__main__":
 
 
 
-    pa = profile_analyzer(username, PATH, base_url, HEADERS, prompt)
+    pa = profile_analyzer(username, base_url, HEADERS, prompt)
     actions = {
         "1": pa.get_user_profile,
         "2": pa.calculate_repository_stats,
