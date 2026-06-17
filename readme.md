@@ -15,6 +15,7 @@ Each folder in this repository is a completely standalone project.
 
 * **[Automated File Organizer](./Phase%201/Projects/Automated%20File%20Organizer/)** A smart, fast, and interactive command-line tool built in Python to automatically sort and organize your cluttered folders. It categorizes files based on their extensions, provides a visual tree view of your directories, and keeps a detailed log of all file movements.
  
+* **[Github Profile Analyzer](./Phase%201/Projects/Github%20Profile%20Analyzer/)** A terminal-based tool that fetches GitHub profile data and generates an AI-powered career analysis report using Google Gemini.
 
 
 
