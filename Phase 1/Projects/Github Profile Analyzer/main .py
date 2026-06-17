@@ -13,8 +13,11 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GEMINI_API  = os.getenv("GEMINI_API")
 base_url="https://api.github.com/"
+
 PATH = pathlib.Path(__file__).parent.resolve() / "reports.json"
+
 prompt_path = pathlib.Path(__file__).parent.resolve() / "prompt.txt"
+
 with prompt_path.open("r") as f :
     prompt = f.read()
 
@@ -27,11 +30,11 @@ HEADERS = {
 
     
 
-def typewriter(text):
+def typewriter(text , delay = 0.001):
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
-        time.sleep(0.001)    
+        time.sleep(delay)    
     print()
 
 class profile_analyzer:
@@ -146,7 +149,7 @@ class profile_analyzer:
 
             for index  ,  repo in enumerate(response ,start=1):
                 repo_name = repo["name"]
-                repo_url = repo["commits_url"][:-6]
+                repo_url = repo["commits_url"].split("{")[0]    
                 repo_commits =  self.get_response(repo_url)
                 print("\n" + "=" * 60)
                 print(f"{index}.  📦{repo_name}")
@@ -209,9 +212,9 @@ class profile_analyzer:
             languages_summary =[]
             if len(repo_response) > 5:
                 for repo  in repos_sorted[:5]:
-                    url = repo["commits_url"][:-5]
+                    url = repo["commits_url"].split("{")[0]
                     commit_len = len(self.get_response(url))
-                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"] , "updated_at":repo["updated_at"] , "pushed_at" : repo["pushed_at"]}
+                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"].split("T")[0] , "updated_at":repo["updated_at"].split("T")[0] , "pushed_at" : repo["pushed_at"].split("T")[0]}
                     top_projects.append(project)
                     url = repo["languages_url"]
                     language_response = self.get_response(url)
@@ -219,16 +222,16 @@ class profile_analyzer:
                        languages_summary.append({key: value})
             else:
                 for repo  in repo_response:
-                    url = repo["commits_url"][:-5]
+                    url = repo["commits_url"].split("{")[0]
                     commit_len = len(self.get_response(url))
-                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"] , "updated_at":repo["updated_at"] , "pushed_at" : repo["pushed_at"]}
+                    project = {"name" : repo["name"], "description" : repo["description"], "language" : repo["language"] , "commits" : commit_len , "size": repo["size"] , "Stars" : repo["stargazers_count"], "created_at":repo["created_at"].split("T")[0] , "updated_at":repo["updated_at"].split("T")[0] , "pushed_at" : repo["pushed_at"].split("T")[0]}
                     top_projects.append(project)
                     url = repo["languages_url"]
                     language_response = self.get_response(url)
                     for key , value in language_response.items():
                         languages_summary.append({key : value})
         spinner.stop()
-      
+        print("All Information Fetched ! ")
         
       
         if profile_summary  and languages_summary and top_projects: 
@@ -238,6 +241,19 @@ class profile_analyzer:
             text = self.AI_response(data)
             spinner.stop()
             typewriter(text)
+            while True:
+                choice  = input("Do You want to save this response (Yes/No) ?")
+                if choice.lower().strip() == "yes":
+                    summary_folder = pathlib.Path(__file__).parent.resolve() / "AI Summaries"
+                    os.makedirs(summary_folder , exist_ok=True)
+                    with open(f"{summary_folder}/{self.username}.txt" , "w") as f:
+                        f.write(text)
+                        typewriter("Summary Saved Successfully ! ", delay=0.01)
+                        break
+                elif choice.lower().strip() == "no":
+                    break
+                else:
+                    typewriter("Invalid Choice !" ,delay=0.01)
 
 
     def AI_response(self ,data):
@@ -253,20 +269,65 @@ class profile_analyzer:
 
 
 def get_username():
-    pass
+    while True:
+        typewriter("Enter the GITHUB Username to Analyze : " ,delay=0.01)
+        username  = input()
+        response = requests.get(f"{base_url}users/{username.strip()}" ,headers= HEADERS).json()
+        if "id" in response:
+            return username.strip()
+        else:
+            print("\033[31m  User not found.\033[0m")
 
 
 
 
 
 
-
-
-
+def show_menu():
+    os.system("cls" if os.name == "nt" else "clear")
+    print("\033[34m")  # blue
+    print(r"""
+ ██████╗ ██╗████████╗██╗  ██╗██╗   ██╗██████╗     ██████╗ ██████╗  ██████╗ ███████╗██╗██╗     ███████╗     █████╗ ███╗   ██╗ █████╗ ██╗  ██╗   ██╗███████╗███████╗██████╗ 
+██╔════╝ ██║╚══██╔══╝██║  ██║██║   ██║██╔══██╗    ██╔══██╗██╔══██╗██╔═══██╗██╔════╝██║██║     ██╔════╝    ██╔══██╗████╗  ██║██╔══██╗██║  ╚██╗ ██╔╝╚══███╔╝██╔════╝██╔══██╗
+██║  ███╗██║   ██║   ███████║██║   ██║██████╔╝    ██████╔╝██████╔╝██║   ██║█████╗  ██║██║     █████╗      ███████║██╔██╗ ██║███████║██║   ╚████╔╝   ███╔╝ █████╗  ██████╔╝
+██║   ██║██║   ██║   ██╔══██║██║   ██║██╔══██╗    ██╔═══╝ ██╔══██╗██║   ██║██╔══╝  ██║██║     ██╔══╝      ██╔══██║██║╚██╗██║██╔══██║██║    ╚██╔╝   ███╔╝  ██╔══╝  ██╔══██╗
+╚██████╔╝██║   ██║   ██║  ██║╚██████╔╝██████╔╝    ██║     ██║  ██║╚██████╔╝██║     ██║███████╗███████╗    ██║  ██║██║ ╚████║██║  ██║███████╗██║   ███████╗███████╗██║  ██║
+ ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝     ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝    ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝""")
+    print("\033[0m")  # reset
+    print("  v1.0.0  |  GitHub API v2026  |  Gemini 3.1 Flash Lite\n")
+    print("  \033[90m--- Profile --------------------------------\033[0m")
+    print("  \033[97m[1]\033[0m  View Profile         Display full GitHub user info")
+    print("  \033[97m[2]\033[0m  Repository Stats     Detailed breakdown of all repos")
+    print("  \033[97m[3]\033[0m  Commit History       Browse recent commits per repo")
+    print("  \033[90m--- Analysis -------------------------------\033[0m")
+    print("  \033[97m[4]\033[0m  AI Profile Summary   Full career analysis with score  \033[34m[AI]\033[0m")
+    print("  \033[90m--------------------------------------------\033[0m")
+    print("  \033[31m[0]\033[0m  Exit\n")
+    return input("  Enter choice › ").strip()
 
 
 if __name__ == "__main__":
-    pa= profile_analyzer("dawoodafzal62138", PATH , base_url , HEADERS , prompt)
-    # pa.calculate_repository_stats()
-    # pa.analyze_commits()
-    pa.AI_summary()
+    username = get_username()
+
+
+
+
+    pa = profile_analyzer(username, PATH, base_url, HEADERS, prompt)
+    actions = {
+        "1": pa.get_user_profile,
+        "2": pa.calculate_repository_stats,
+        "3": pa.analyze_commits,
+        "4": pa.AI_summary,
+    }
+    while True:
+        choice = show_menu()
+        if choice == "0":
+            print("  Goodbye.")
+            break
+        elif choice in actions:
+            actions[choice]()
+            input("\n  Press Enter to return to menu...")
+        else:
+            print("  Invalid choice.")
+
+
