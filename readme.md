@@ -17,5 +17,6 @@ Each folder in this repository is a completely standalone project.
  
 * **[Github Profile Analyzer](./Phase%201/Projects/Github%20Profile%20Analyzer/)** A terminal-based tool that fetches GitHub profile data and generates an AI-powered career analysis report using Google Gemini.
 
+* **[Currency Convertor](./Phase%201/Projects/Currency%20Convertor/)** A terminal-based currency converter built in Python that fetches real-time exchange rates using the [ExchangeRate-API](https://www.exchangerate-api.com/).
 
 
