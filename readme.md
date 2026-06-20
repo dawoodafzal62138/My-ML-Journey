@@ -19,4 +19,5 @@ Each folder in this repository is a completely standalone project.
 
 * **[Currency Convertor](./Phase%201/Projects/Currency%20Convertor/)** A terminal-based currency converter built in Python that fetches real-time exchange rates using the [ExchangeRate-API](https://www.exchangerate-api.com/).
 
+* **[Quiz CLI Application](./Phase%201/Projects/Quiz%20CLI%20Application/)** A colorful, AI-powered terminal quiz app built with Python and Google Gemini. Test your knowledge across 15 subjects at 3 difficulty levels — all from your command line.
 
