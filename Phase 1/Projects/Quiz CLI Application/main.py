@@ -11,7 +11,7 @@ import datetime
 
 # Load the api key from gemini
 load_dotenv()
-GENAI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Path to Store history
 PATH = pathlib.Path(__file__).parent.resolve() / "history.txt"
@@ -53,7 +53,7 @@ class quiz_app:
         try:
             spinner.start()
             # made client and give the system instruction
-            client = genai.Client(api_key=GENAI_API_KEY)
+            client = genai.Client(api_key=GEMINI_API_KEY)
             session =client.chats.create(
                 model="gemini-3.1-flash-lite", config={
                     "system_instruction":self.system_prompt,
@@ -216,7 +216,6 @@ def menu():
     
 if __name__ == "__main__":
 
-    # print(difficulty, subject)
     quiz = quiz_app(prompt , PATH)
     actions={
         "1" : quiz.start_quiz,
