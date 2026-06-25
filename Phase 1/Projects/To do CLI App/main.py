@@ -68,7 +68,7 @@ class TaskManager:
         t= Task( id , title , "pending", date_time )
         self.data= t.to_dict()
         self.save_task()
-        print(f"{BRIGHT_GREEN}\n Task Added Succesfully!")
+        print(f"{BRIGHT_GREEN}\n Task Added Successfully!")
 
 
 
@@ -113,14 +113,14 @@ class TaskManager:
                 data.remove(item)
         with self.path.open("w" ) as f:
             json.dump(data, f ,indent=4)
-        print(f"{BRIGHT_GREEN}\n Task Deleted Succesfully!")
+        print(f"{BRIGHT_GREEN}\n Task Deleted Successfully!")
 
         
         
         
     
 
-    def compelete_task(self):
+    def complete_task(self):
 
         os.system("cls" if os.name == "nt" else "clear")
         print(f"\n{GREY}{'='*60}{RESET}")
@@ -131,7 +131,7 @@ class TaskManager:
         while True:
             try:
                 found  = False
-                id  = int(input(f"\n{BLUE}Enter Task ID to mark  it Ccomplete : {RESET}" ))
+                id  = int(input(f"\n{BLUE}Enter Task ID to mark  it Complete : {RESET}" ))
                 for item in data:
                     if item["id"] == id:
                         found = True
@@ -238,16 +238,16 @@ def menu():
 
 
 
-PATH  = pathlib.Path(__file__).parent.resolve() / "data.json"
 
     
 if __name__ == "__main__":
 
+    PATH  = pathlib.Path(__file__).parent.resolve() / "data.json"
     tm = TaskManager(PATH)
     actions={
         "1" : tm.add_task,
         "2" : tm.list_tasks,
-        "3" : tm.compelete_task,
+        "3" : tm.complete_task,
         "4" : tm.delete_task,
         "5" : exit
      }
