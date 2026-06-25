@@ -6,7 +6,7 @@ import os
 
 BLACK = "\033[30m"
 RED = "\033[31m"
-GREEN = "\033[32m"
+BRIGHT_GREEN = "\033[92m"
 YELLOW = "\033[33m"
 BLUE = "\033[34m"
 MAGENTA = "\033[35m"
@@ -57,12 +57,24 @@ class TaskManager:
 
     
     
-    def add_task(self  , title : str, status : str ):
+    def add_task(self   ):
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"\n{GREY}{'='*60}{RESET}")
+        print(f"{MAGENTA}{'➕ ADD TASK'.center(60)}{RESET}")
+        print(f"{GREY}{'='*60}{RESET}")
+        title =  input(f"\n{BLUE}Enter the title : {RESET}")
         id = self.get_next_id()
         date_time = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-        t= Task( id , title , status, date_time )
+        t= Task( id , title , "pending", date_time )
         self.data= t.to_dict()
         self.save_task()
+        print(f"{BRIGHT_GREEN}\n Task Added Succesfully!")
+
+
+
+
+
+
 
 
     def save_task(self):
@@ -72,39 +84,133 @@ class TaskManager:
             json.dump(data, f ,indent=4)
 
 
-    def delete_task(self  ,id : int):
+    def delete_task(self ):
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"\n{GREY}{'='*60}{RESET}")
+        print(f"{MAGENTA}{'❌ DELETE TASK'.center(60)}{RESET}")
+        print(f"{GREY}{'='*60}{RESET}")
         data = self.load_task()
+        while True:
+            try:
+                found  = False
+                id  = int(input(f"\n{BLUE}Enter Task ID to delete it : {RESET}" ))
+                for item in data:
+                    if item["id"] == id:
+                        found = True
+                        break
+                    
+                if not found:
+                    print(f"{BRIGHT_RED} \nTask with id {id} is not Found ! {RESET}")
+                    continue
+                else:
+                    break 
+            except ValueError :
+                print(f"{BRIGHT_RED} \nInvalid Choice")
+
+        
         for item in data:
             if item["id"] == id:
                 data.remove(item)
         with self.path.open("w" ) as f:
             json.dump(data, f ,indent=4)
+        print(f"{BRIGHT_GREEN}\n Task Deleted Succesfully!")
+
+        
+        
         
     
 
-    def compelete_task(self , id ):
+    def compelete_task(self):
+
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"\n{GREY}{'='*60}{RESET}")
+        print(f"{MAGENTA}{'✅ COMPLETE TASK'.center(60)}{RESET}")
+        print(f"{GREY}{'='*60}{RESET}")
+
         data = self.load_task()
+        while True:
+            try:
+                found  = False
+                id  = int(input(f"\n{BLUE}Enter Task ID to mark  it Ccomplete : {RESET}" ))
+                for item in data:
+                    if item["id"] == id:
+                        found = True
+                        break
+                    
+                if not found:
+                    print(f"{BRIGHT_RED} \nTask with id {id} is not Found ! {RESET}")
+                    continue
+                else:
+                    break    
+            except ValueError :
+                print(f"{BRIGHT_RED} \nInvalid Choice")
+
+
         for item in data:
             if item["id"] == id:
                 item["status"] = "completed"
         with self.path.open("w" ) as f:
             json.dump(data, f ,indent=4)
+        print(f"{BRIGHT_GREEN} \nTask Marked Completed !")
 
     
     
     def list_tasks(self):
         data = self.load_task()
+        os.system("cls" if os.name == "nt" else "clear")
+        
+        print(f"\n{GREY}{'='*60}{RESET}")
+        print(f"{MAGENTA}{'📋 ALL TASKS'.center(60)}{RESET}")
+        print(f"{GREY}{'='*60}{RESET}")
+       
+        if not data:
+            print(f"{YELLOW}\nNo tasks found in your list!{RESET}")
+            return
+      
+        total = len(data)
+        
+        if total > 0:
+            completed = 0
+            for item in data:
+                if item["status"] == "completed":
+                    completed += 1
+            
+            percent = (completed / total) * 100
+            
+            BAR_WIDTH = 30
+            filled_chars = int(BAR_WIDTH * (completed / total))
+            empty_chars = BAR_WIDTH - filled_chars
+            
+            bar_string = f"{BRIGHT_GREEN}{'=' * filled_chars}{RESET}{GREY}{'-' * empty_chars}{RESET}"
+            
+            print(f"[{bar_string}] {BRIGHT_GREEN}{percent:.0f}% Completed ({completed}/{total} Tasks){RESET}")
+            print(f"{GREY}{'-'*60}{RESET}")
+        
+        
+        print(f"{GREY}{'='*60}{RESET}")
         for item in data:
-            print("="*60)
-            for key , value in item.items():
-                print(f"{key } : {value}")
-            print("="*60)
+            for key, value in item.items():
+                key_formatted = f"{CYAN}{key:<12}{RESET}"
+                
+                if key == "status":
+                    if value == "completed":
+                        value_formatted = f"{BRIGHT_GREEN}{value}{RESET}"
+                    else:
+                        value_formatted = f"{YELLOW}{value}{RESET}"
+                
+                else:
+                    value_formatted = f"{WHITE}{value}{RESET}"
+                
+                print(f"{key_formatted} : {value_formatted}")
+                
+            print(f"{GREY}{'='*60}{RESET}")
 
 
 
 
 def menu():
     os.system("cls" if os.name == "nt" else "clear")
+    print(f"{BRIGHT_GREEN}")
     print(r"""
 ████████╗ ██████╗     ██████╗  ██████╗      █████╗ ██████╗ ██████╗ 
 ╚══██╔══╝██╔═══██╗    ██╔══██╗██╔═══██╗    ██╔══██╗██╔══██╗██╔══██╗
@@ -115,14 +221,14 @@ def menu():
                                                                    
 """)
     print(f"{CYAN}- {RESET}"*30)
-    print(f"{MAGENTA}\t\tLearn -- Play -- Improve")
+    print(f"{MAGENTA}\t\tYour daily tasks, simplified")
     print(f"{CYAN}- {RESET}"*30)
     print(f"{BLUE} [1] {GREY}Add Task")
     print(f"{BLUE} [2] {GREY}List ALl Task")
     print(f"{BLUE} [3] {GREY}Complete Task")
     print(f"{BLUE} [4] {GREY}Delete Task")
     print(f"{BLUE} [5] {GREY}Exit")
-    choice= input(f"\t\n{GREEN}Enter your Choice > ")
+    choice= input(f"\t\n{BRIGHT_GREEN}Enter your Choice > ")
     return choice
 
 
@@ -150,9 +256,9 @@ if __name__ == "__main__":
         if choice in actions:
 
             actions[choice]()
-            input(f"{GREEN} Press Enter to Return to Menu ....")
+            input(f"{BRIGHT_GREEN} \nPress Enter to Return to Menu ....")
         else:
-            print(f"{BRIGHT_RED} Invalid Choice ")
+            print(f"{BRIGHT_RED} \nInvalid Choice ")
 
 
 
