@@ -1,8 +1,20 @@
 import json
-import argparse
 import datetime
 import pathlib
 import os
+
+
+BLACK = "\033[30m"
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+CYAN = "\033[36m"
+WHITE = "\033[37m"
+GREY ="\033[90m"
+RESET = "\033[0m"
+BRIGHT_RED = "\033[91m"
 
 
 class Task:
@@ -45,9 +57,10 @@ class TaskManager:
 
     
     
-    def add_task(self  , title : str, status : str , created_at ):
+    def add_task(self  , title : str, status : str ):
         id = self.get_next_id()
-        t= Task( id , title , status, created_at )
+        date_time = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+        t= Task( id , title , status, date_time )
         self.data= t.to_dict()
         self.save_task()
 
@@ -90,12 +103,58 @@ class TaskManager:
 
 
 
+def menu():
+    os.system("cls" if os.name == "nt" else "clear")
+    print(r"""
+████████╗ ██████╗     ██████╗  ██████╗      █████╗ ██████╗ ██████╗ 
+╚══██╔══╝██╔═══██╗    ██╔══██╗██╔═══██╗    ██╔══██╗██╔══██╗██╔══██╗
+   ██║   ██║   ██║    ██║  ██║██║   ██║    ███████║██████╔╝██████╔╝
+   ██║   ██║   ██║    ██║  ██║██║   ██║    ██╔══██║██╔═══╝ ██╔═══╝ 
+   ██║   ╚██████╔╝    ██████╔╝╚██████╔╝    ██║  ██║██║     ██║     
+   ╚═╝    ╚═════╝     ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝     ╚═╝     
+                                                                   
+""")
+    print(f"{CYAN}- {RESET}"*30)
+    print(f"{MAGENTA}\t\tLearn -- Play -- Improve")
+    print(f"{CYAN}- {RESET}"*30)
+    print(f"{BLUE} [1] {GREY}Add Task")
+    print(f"{BLUE} [2] {GREY}List ALl Task")
+    print(f"{BLUE} [3] {GREY}Complete Task")
+    print(f"{BLUE} [4] {GREY}Delete Task")
+    print(f"{BLUE} [5] {GREY}Exit")
+    choice= input(f"\t\n{GREEN}Enter your Choice > ")
+    return choice
+
+
+
+
+
+
+
 
 PATH  = pathlib.Path(__file__).parent.resolve() / "data.json"
 
+    
 if __name__ == "__main__":
+
     tm = TaskManager(PATH)
-    # tm.add_task( "buy groceries"  , "pending" , str(datetime.datetime.now()))
-    # tm.delete_task(1)
-    # tm.compelete_task(2)
-    tm.list_tasks()
+    actions={
+        "1" : tm.add_task,
+        "2" : tm.list_tasks,
+        "3" : tm.compelete_task,
+        "4" : tm.delete_task,
+        "5" : exit
+     }
+    while True:
+        choice = menu()
+        if choice in actions:
+
+            actions[choice]()
+            input(f"{GREEN} Press Enter to Return to Menu ....")
+        else:
+            print(f"{BRIGHT_RED} Invalid Choice ")
+
+
+
+
+
