@@ -21,3 +21,4 @@ Each folder in this repository is a completely standalone project.
 
 * **[Quiz CLI Application](./Phase%201/Projects/Quiz%20CLI%20Application/)** A colorful, AI-powered terminal quiz app built with Python and Google Gemini. Test your knowledge across 15 subjects at 3 difficulty levels — all from your command line.
 
+* **[TO DO CLI App](./Phase%201/Projects/To%20do%20CLI%20App/)** A fully interactive, colorful command-line Task Manager built in Python. Tasks are persisted locally in a JSON file — no database, no dependencies, no internet required.
