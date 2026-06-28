@@ -4,7 +4,7 @@ Welcome to my central project portfolio! This repository tracks my progression a
 
 Each folder in this repository is a completely standalone project.
 
-## 📂 Project Directory
+## 📂 **(PHASE 1)** Project Directory
 
 ### 🌱 Fundamentals
 * **[CLI Password Manager](./Phase%201/Projects/CLI%20password%20manager)** - A secure, terminal-based password manager using local Fernet encryption.
@@ -24,3 +24,9 @@ Each folder in this repository is a completely standalone project.
 * **[TO DO CLI App](./Phase%201/Projects/To%20do%20CLI%20App/)** A fully interactive, colorful command-line Task Manager built in Python. Tasks are persisted locally in a JSON file — no database, no dependencies, no internet required.
 
 * **[Automated Email Report Sender](./Phase%201/Projects/Automated%20Email%20Report%20Sender/)** A Python automation tool that reads sales data from a CSV file, analyzes it using **Google Gemini AI**, and emails the generated report directly to a recipient via Gmail.
+
+## 📂 **(PHASE 2)** Project Directory
+
+### 📐 Numpy
+
+* **[Image Processor Without Libraries](./Phase%202/Projects/Image%20Processor%20Without%20Libraries/)** The project demonstrates how to perform common image processing operations — brightness, grayscale, contrast, and blur — using only `numpy` and `PIL`, without relying on dedicated image processing libraries like OpenCV or scikit-image.
