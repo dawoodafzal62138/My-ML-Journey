@@ -1,3 +1,4 @@
+# import unittest
 from framework import (
     test, skip, expect_failure,
     assert_equal, assert_not_equal,
@@ -30,3 +31,4 @@ def test_raises():
     assert_raises(ZeroDivisionError, lambda: 1 / 0)
 
 run_all()
+

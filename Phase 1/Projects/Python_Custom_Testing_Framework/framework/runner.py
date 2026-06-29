@@ -1,14 +1,32 @@
 from .decorators import _test_registry
 from .exceptions import TestSkipped , TestFailed
+from time import perf_counter
+
+BRIGHT_RED = "\033[91m"
+BRIGHT_GREEN = "\033[92m"
+BRIGHT_YELLOW = "\033[93m"
+BRIGHT_BLUE = "\033[94m"
+GREY ="\033[90m"
+RESET = "\033[0m"
+
+
 
 class TestRunner():
     def __init__(self):
         self.results = []
 
+
     def run_all(self):
+        start_time = perf_counter()
+     
+
         for test in _test_registry:
             self._run_one(test)  
-        self._print_report()
+        end_time = perf_counter()
+        total_time = end_time -  start_time
+        self._print_report(total_time)
+
+
 
     def _run_one(self , test):
         name = test.__name__
@@ -16,6 +34,7 @@ class TestRunner():
             self.results.append(("SKIP" , name , test._skip))
         else:
             try:
+                
                 test()
                 if test._expect_failure:
                     self.results.append(("FAIL" , name , "Expected to fail but passed"))
@@ -27,37 +46,42 @@ class TestRunner():
                 else:
                     self.results.append(("FAIL", name, str(e)))
 
-            except TestSkipped as e:
-                self.results.append(("SKIP", name, str(e)))
+           
 
             except Exception as e:
                 self.results.append(("ERROR", name, f"{type(e).__name__}: {e}"))
 
-    def _print_report(self):
+    def _print_report(self ,time):
         passed  = 0
         failed  = 0
         skipped = 0
         xfail   = 0
         errors  = 0
-        
+        print("-"*60 +"\n")
         for status, name, message in self.results:
             if status == "PASS":
-                print(f"✅ PASS   {name}")
+                print(f"✅ {BRIGHT_GREEN}PASS{RESET}   {name}")
                 passed+=1
 
             elif status == "FAIL":
-                print(f"❌ FAIL   {name} — {message}")
+                print(f"❌ {BRIGHT_RED}FAIL{RESET}   {name} — {message}")
                 failed+=1
 
             elif status == "SKIP":
-                print(f"⏩ SKIP   {name} — {message}")
+                print(f"⏩ {BRIGHT_BLUE}SKIP{RESET}   {name} — {message}")
                 skipped+=1
 
             elif status == "XFAIL":
-                print(f"🟡 XFAIL   {name} — {message}")
+                print(f"🟡 {BRIGHT_YELLOW}XFAIL{RESET}  {name} — {message}")
                 xfail+=1
            
             else :
-                print(f"💥 ERROR   {name} — {message}")
+                print(f"💥 {BRIGHT_RED}ERROR{RESET}   {name} — {message}")
                 errors+=1
-        print(f"{passed} passed | {failed} failed | {skipped} skipped | {xfail} xfail | {errors} errors")
+        
+        print("-"*60)
+        print(f"Run {len(self.results)} in {time:.2f}s")
+        print(f"{BRIGHT_GREEN}{passed} Passed {RESET}| {BRIGHT_RED}{failed} Failed {RESET}| {BRIGHT_BLUE}{skipped} skipped {RESET}| {BRIGHT_YELLOW}{xfail} xFail {RESET}| {BRIGHT_RED}{errors} errors{RESET}")
+        percent = passed/len(self.results)*100
+        print(f"{BRIGHT_GREEN}Success Rate : {GREY}{percent:.2f}%{RESET}")
+        
