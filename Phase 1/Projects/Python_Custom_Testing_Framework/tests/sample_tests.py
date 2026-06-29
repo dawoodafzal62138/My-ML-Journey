@@ -1,5 +1,5 @@
 from framework import (
-    test, skip, expected_failure,
+    test, skip, expect_failure,
     assert_equal, assert_not_equal,
     assert_true, assert_false,
     assert_raises, run_all
@@ -21,7 +21,7 @@ def test_this_will_fail():
 def test_multiplication():
     assert_equal(3 * 3, 9)
 
-@expected_failure
+@expect_failure
 def test_known_bug():
     assert_equal(0.1 + 0.2, 0.3)
 

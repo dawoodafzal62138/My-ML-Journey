@@ -8,7 +8,7 @@ class TestRunner():
     def run_all(self):
         for test in _test_registry:
             self._run_one(test)  
-        self.print_report()
+        self._print_report()
 
     def _run_one(self , test):
         name = test.__name__
