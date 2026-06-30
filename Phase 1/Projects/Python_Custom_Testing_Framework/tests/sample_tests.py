@@ -1,4 +1,4 @@
-# import unittest
+import unittest
 from framework import (
     test, skip, expect_failure,
     assert_equal, assert_not_equal,
@@ -32,3 +32,11 @@ def test_raises():
 
 run_all()
 
+
+
+class test(unittest.TestCase):
+    def __init__(self, methodName = "runTest"):
+        super().__init__(methodName)
+
+    def test_abc(self):
+        ass
