@@ -1,7 +1,8 @@
+import warnings
 from .exceptions import TestFailed
-from typing import Iterable, Callable, Any
+from typing import Iterable, Callable, Any ,Type
 import re
-
+from collections import Counter
 
 
 def assert_equal(actual : object , expected : object) -> Any:
@@ -127,4 +128,57 @@ def assert_not_regex(text: str , regex : str) -> None:
 
     if  re.search(regex , text ):
         raise TestFailed(f"Expected {repr(text)} to not match the regular expression {repr(regex)}.")
+    
+
+
+
+
+def assert_warns(func: Callable, expected_warning: Type[Warning]) -> None:
    
+    with warnings.catch_warnings(record=True) as captured_warnings:
+        
+        warnings.simplefilter("always")
+        
+        func()
+        
+        if not captured_warnings:
+            raise TestFailed(f"Expected {expected_warning.__name__} to be triggered, but no warning was triggered.")
+        
+        matched = any(issubclass(w.category, expected_warning) for w in captured_warnings)
+        
+        if not matched:
+            actual_warnings = [w.category.__name__ for w in captured_warnings]
+            raise TestFailed(f"Expected {expected_warning.__name__}, but got {actual_warnings}.")
+        
+
+
+
+def assert_count_equal(iterable1 : Iterable , iterable2 : Iterable) -> None:
+    if Counter(iterable1) != Counter(iterable2):
+        raise TestFailed(f"Expected {repr(iterable1)} and {repr(iterable2)} to contain the same elements with the same counts.")
+    
+
+def assert_multiline_equal(text1 : str , text2 : str ) -> None:
+    if text1 != text2:
+        raise TestFailed(f"Expected multiline strings to be equal.\nExpected:\n{text1}\n\nActual:\n{text2}")
+    
+
+def assert_list_equal(list1 : list , list2 : list) -> None:
+    if list1 != list2:
+        raise TestFailed(f"Expected Lists to be equal.\nExpected: {repr(list1)}\nActual:   {repr(list2)}")
+
+
+
+def assert_set_equal(set1 : set , set2 : set) -> None:
+    if set1 != set2:
+        raise TestFailed(f"Expected sets to be equal.\nExpected: {repr(set1)}\nActual:   {repr(set2)}")
+
+
+def assert_tuple_equal(tuple1 : tuple , tuple2 : tuple) -> None:
+    if tuple1 != tuple2:
+        raise TestFailed(f"Expected tuples to be equal.\nExpected: {repr(tuple1)}\nActual:   {repr(tuple2)}")
+
+
+def assert_dict_equal(dict1 : dict , dict2 : dict) -> None:
+    if dict1 != dict2:
+        raise TestFailed(f"Expected dicts to be equal.\nExpected: {repr(dict1)}\nActual:   {repr(dict2)}")
