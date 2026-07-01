@@ -3,7 +3,7 @@ from framework import(
     test, skip, expect_failure,
     assert_equal, assert_not_equal,
     assert_true, assert_false,
-    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,assert_is_instance , assert_is_not_instance , assert_in ,assert_not_in ,assert_almost_equal ,assert_not_almost_equal ,assert_greater ,assert_greater_equal ,assert_less ,assert_less_equal,  run_all
+    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,assert_is_instance , assert_is_not_instance , assert_in ,assert_not_in ,assert_almost_equal ,assert_not_almost_equal ,assert_greater ,assert_greater_equal ,assert_less ,assert_less_equal, assert_is_valid_regex , assert_not_regex , assert_regex  ,  run_all
 ) 
 
 def function_that_return_none():
@@ -84,25 +84,40 @@ def function_that_return_none():
 #     assert_not_almost_equal(3.141, 3.142, decimal=3)
 
 
-@test
-def test_greater():
-    assert_greater(10, 5)
+# @test
+# def test_greater():
+#     assert_greater(10, 5)
 
-@test
-def test_less():
-    assert_less(3, 8)
+# @test
+# def test_less():
+#     assert_less(3, 8)
 
-@test
-def test_greater_equal():
-    assert_greater_equal(10, 10)
-    assert_greater_equal(15, 5)
+# @test
+# def test_greater_equal():
+#     assert_greater_equal(10, 10)
+#     assert_greater_equal(15, 5)
 
-@test
-def test_less_equal():
-    assert_less_equal(5, 5)
-    assert_less_equal(2, 10)
+# @test
+# def test_less_equal():
+#     assert_less_equal(5, 5)
+#     assert_less_equal(2, 10)
 
 
+# @test
+# def test_valid_regex():
+#     # This should PASS because [a-z]+ is valid regex syntax
+#     assert_is_valid_regex("[a-z]+")
+
+# @test
+# def test_assert_regex():
+#     # This should PASS. The regex \d+ (looking for numbers) will be found 
+#     # in the middle of the string using re.search().
+#     assert_regex("My order number is 12345.", r"\d+")
+
+# @test
+# def test_assert_not_regex():
+#     # This should PASS. The text does not contain any numbers (\d+)
+#     assert_not_regex("I have no numbers here", r"\d+")
 
 
 
@@ -115,4 +130,4 @@ run_all()
 #         super().__init__(methodName)
 
 #     def test_abc(self):
-#         self.assertIsNot
+#         self.assertRegex

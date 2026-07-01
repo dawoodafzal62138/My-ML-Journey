@@ -1,5 +1,7 @@
 from .exceptions import TestFailed
 from typing import Iterable, Callable, Any
+import re
+
 
 
 def assert_equal(actual : object , expected : object) -> Any:
@@ -105,3 +107,24 @@ def assert_less_equal(value1 : int , value2 : int) -> None:
     if not value1 <= value2:
         raise TestFailed(f"Expected {value1} to be less than or equal to {value2}.")
 
+
+def assert_is_valid_regex(expr : str) -> None:
+    try:
+        re.compile(expr)
+    except re.error :
+        raise TestFailed(f"Expected {repr(expr)} to be a valid regular expression, but it is invalid.") 
+
+
+def assert_regex(text: str , regex : str) -> None:
+
+    if not re.search(regex , text ):
+        raise TestFailed(f"Expected {repr(text)} to match the regular expression {repr(regex)}.")
+
+
+
+
+def assert_not_regex(text: str , regex : str) -> None:
+
+    if  re.search(regex , text ):
+        raise TestFailed(f"Expected {repr(text)} to not match the regular expression {repr(regex)}.")
+   
