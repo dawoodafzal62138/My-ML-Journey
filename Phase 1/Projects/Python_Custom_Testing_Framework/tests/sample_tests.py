@@ -3,7 +3,7 @@ from framework import(
     test, skip, expect_failure,
     assert_equal, assert_not_equal,
     assert_true, assert_false,
-    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,assert_is_instance , assert_is_not_instance ,  run_all
+    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,assert_is_instance , assert_is_not_instance , assert_in ,assert_not_in ,assert_almost_equal ,assert_not_almost_equal ,assert_greater ,assert_greater_equal ,assert_less ,assert_less_equal,  run_all
 ) 
 
 def function_that_return_none():
@@ -63,14 +63,44 @@ def function_that_return_none():
 #     s = "string"
 #     assert_not_in("k" , s)
 
-@test 
-def is_instance():
-    assert_is_instance(12 ,int)
+# @test 
+# def is_instance():
+#     assert_is_instance(12 ,int)
 
 
-@expect_failure
-def is_not_instance():
-    assert_is_not_instance((1,23,4) ,tuple)
+# @expect_failure
+# def is_not_instance():
+#     assert_is_not_instance((1,23,4) ,tuple)
+
+# @test
+# def almost_equal():
+#     assert_almost_equal(0.1 + 0.2, 0.3 )
+    
+
+
+# @test
+# def not_almost_equal():
+
+#     assert_not_almost_equal(3.141, 3.142, decimal=3)
+
+
+@test
+def test_greater():
+    assert_greater(10, 5)
+
+@test
+def test_less():
+    assert_less(3, 8)
+
+@test
+def test_greater_equal():
+    assert_greater_equal(10, 10)
+    assert_greater_equal(15, 5)
+
+@test
+def test_less_equal():
+    assert_less_equal(5, 5)
+    assert_less_equal(2, 10)
 
 
 
