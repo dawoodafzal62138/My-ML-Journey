@@ -1,4 +1,4 @@
-import unittest
+
 import warnings
 from framework import(
     test, skip, expect_failure,
@@ -130,27 +130,11 @@ def test_valid_regex():
 
 @test
 def test_assert_regex():
-    # This should PASS. The regex \d+ (looking for numbers) will be found 
-    # in the middle of the string using re.search().
     assert_regex("My order number is 12345.", r"\d+")
 
 @test
 def test_assert_not_regex():
-    # This should PASS. The text does not contain any numbers (\d+)
     assert_not_regex("I have no numbers here", r"\d+")
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @test
@@ -206,10 +190,3 @@ def test_assert_dict_equal():
 
 run_all()
 
-
-# class test(unittest.TestCase):
-#     def __init__(self, methodName = "runTest"):
-#         super().__init__(methodName)
-
-#     def test_abc(self):
-#         self.assertRegex

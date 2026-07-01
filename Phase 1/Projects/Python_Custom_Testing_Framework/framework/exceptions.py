@@ -9,5 +9,3 @@ class TestSkipped(Exception):
 
 
 
-class UnexpectedSuccess(Exception):
-    pass

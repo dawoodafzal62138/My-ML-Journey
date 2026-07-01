@@ -12,7 +12,7 @@ def assert_equal(actual : object , expected : object) -> Any:
 
 def assert_not_equal(actual : object , expected : object) -> Any:
     if actual == expected:
-        raise TestFailed(f"Expected : {repr(expected)} , but Got : {repr(actual)}")
+        raise TestFailed(f"Expected values to NOT be equal, but both are: {repr(actual)}")
 
 
 def assert_true(value : bool) -> Any:
@@ -80,7 +80,7 @@ def assert_almost_equal(value1 : float , value2 : float , decimal : int = 7) -> 
         raise TestFailed(f"Expected {repr(value1)} to be almost equal to {repr(value2)}.")
     
 
-def assert_not_almost_equal(value1 : float , value2 : float , decimal : int) -> None:
+def assert_not_almost_equal(value1 : float , value2 : float , decimal : int =7) -> None:
     rounded1 = round(value1 , decimal)
     rounded2 = round(value2 , decimal)
     if rounded1 == rounded2 :

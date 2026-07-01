@@ -1,447 +1,389 @@
+# 🧪 Python Custom Testing Framework
 
-# PyMiniTest 🧪
-
-> A lightweight Python testing framework built from scratch using only the Python standard library.
-
-PyMiniTest is a minimal unit testing framework inspired by `pytest`. It demonstrates how decorators, custom assertions, exceptions, introspection, and a test runner work together to build a testing framework from the ground up.
-
-This project is designed primarily as a **learning project** and a **portfolio project** to showcase advanced Python concepts without relying on external libraries.
-
----
-
-## ✨ Features
-
-- ✅ Decorator-based test registration
-- ✅ Multiple built-in assertion functions
-- ✅ Skip tests with custom reasons
-- ✅ Expected failure (`XFAIL`) support
-- ✅ Colored terminal output
-- ✅ Execution time measurement
-- ✅ Summary report
-- ✅ Pure Python (Standard Library Only)
+A lightweight, decorator-based Python testing framework built from scratch — no third-party dependencies. Write expressive tests with clean syntax, rich assertions, and a beautifully formatted terminal report.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-pyminitest/
+Python_Custom_Testing_Framework/
 │
-├── __init__.py          # Public API
-├── assertions.py        # Assertion functions
-├── decorators.py        # Test decorators
-├── exceptions.py        # Custom exceptions
-└── runner.py            # Test runner and reporting
+├── framework/                  # Core framework package
+│   ├── __init__.py             # Public API & global runner
+│   ├── assertions.py           # All assertion helper functions
+│   ├── decorators.py           # @test, @skip, @expect_failure decorators
+│   ├── exceptions.py           # Custom exception classes
+│   └── runner.py               # TestRunner — executes & reports tests
+│
+├── tests/                      # Your test files live here
+│   └── sample_tests.py         # Full usage examples for every feature
+│
+└── README.md
 ```
 
 ---
 
-# Installation
+## 🚀 Getting Started
 
-Simply copy the package into your project.
+### Prerequisites
 
-```
-project/
-│
-├── pyminitest/
-│   ├── __init__.py
-│   ├── assertions.py
-│   ├── decorators.py
-│   ├── exceptions.py
-│   └── runner.py
-│
-└── tests.py
-```
+- Python **3.7+**
+- No external packages required — only Python's standard library.
 
-No installation is required.
+### Running Tests
 
-No external dependencies.
-
----
-
-# Quick Start
-
-Create a file:
+Place your test file inside the `tests/` directory (or anywhere you prefer), import the framework, and call `run_all()` at the end:
 
 ```python
-from pyminitest import *
+# tests/my_tests.py
+from framework import test, assert_equal, run_all
 
 @test
 def test_addition():
-    assert_equal(2 + 2, 4)
-
-@test
-def test_truth():
-    assert_true(True)
+    assert_equal(1 + 1, 2)
 
 run_all()
 ```
 
-Output:
+Then run it from the terminal:
+
+```bash
+python tests/my_tests.py
+```
+
+---
+
+## 📦 Package Overview
+
+### `framework/__init__.py`
+
+The public entry point of the framework. It imports and re-exports everything you need in one place, and creates a shared global `TestRunner` instance.
+
+```python
+from framework import (
+    test, skip, expect_failure,
+    assert_equal, assert_true,
+    run_all,
+    # ... and more
+)
+```
+
+Calling `run_all()` discovers and executes all tests registered via decorators and prints the final report.
+
+---
+
+### `framework/decorators.py`
+
+Provides three decorators that register and configure test functions. All decorated functions are stored in the internal `_test_registry` list, which the runner iterates over.
+
+#### `@test`
+Marks a function as a standard test case.
+
+```python
+@test
+def test_addition():
+    assert_equal(2 + 2, 4)
+```
+
+#### `@skip(reason)`
+Skips the test entirely and records the given reason in the report.
+
+```python
+@skip("Feature not implemented yet")
+def test_new_feature():
+    ...
+```
+
+#### `@expect_failure`
+Marks a test that is **known to fail**. If it fails → reported as `XFAIL` (expected failure, acceptable). If it unexpectedly passes → reported as `FAIL`.
+
+```python
+@expect_failure
+def test_known_floating_point_bug():
+    assert_equal(0.1 + 0.2, 0.3)   # will fail — that's expected
+```
+
+---
+
+### `framework/exceptions.py`
+
+Defines the custom exception hierarchy used internally:
+
+| Exception | Purpose |
+|---|---|
+| `TestFailed` | Raised by any failed assertion |
+| `TestSkipped` | Raised by `@skip` to signal a skipped test |
+| `UnexpectedSuccess` | Reserved for tests that pass when failure was expected |
+
+You generally won't use these directly — they're caught and handled by the runner.
+
+---
+
+### `framework/runner.py`
+
+The `TestRunner` class drives the entire test lifecycle.
+
+**How it works:**
+
+1. Iterates over `_test_registry` (populated by decorators).
+2. Runs each test and categorizes the result.
+3. Prints a color-coded report to the terminal.
+4. Shows a summary with counts, elapsed time, and success rate.
+
+**Result statuses:**
+
+| Status | Symbol | Meaning |
+|---|---|---|
+| `PASS` | ✅ | Test ran and all assertions passed |
+| `FAIL` | ❌ | An assertion failed (or expected-failure test passed) |
+| `SKIP` | ⏩ | Test was decorated with `@skip` |
+| `XFAIL` | 🟡 | Test failed as expected (`@expect_failure`) |
+| `ERROR` | 💥 | An unexpected exception occurred (not `TestFailed`) |
+
+---
+
+### `framework/assertions.py`
+
+The heart of the framework — over 25 assertion functions covering equality, identity, type checks, comparisons, collections, strings, regex, warnings, and more.
+
+---
+
+## ✅ Assertions Reference
+
+### Equality
+
+| Function | Description |
+|---|---|
+| `assert_equal(actual, expected)` | Passes if `actual == expected` |
+| `assert_not_equal(actual, expected)` | Passes if `actual != expected` |
+
+```python
+assert_equal("hello", "hello")
+assert_not_equal(1, 2)
+```
+
+---
+
+### Boolean
+
+| Function | Description |
+|---|---|
+| `assert_true(value)` | Passes if `value` is truthy |
+| `assert_false(value)` | Passes if `value` is falsy |
+
+```python
+assert_true(1 == 1)
+assert_false([] )   # empty list is falsy
+```
+
+---
+
+### Exception Handling
+
+| Function | Description |
+|---|---|
+| `assert_raises(exception_type, func, *args, **kwargs)` | Passes if calling `func(*args)` raises `exception_type` |
+
+```python
+assert_raises(ZeroDivisionError, lambda: 1 / 0)
+assert_raises(ValueError, int, "not_a_number")
+```
+
+---
+
+### Identity
+
+| Function | Description |
+|---|---|
+| `assert_is(expr1, expr2)` | Passes if `expr1 is expr2` (same object) |
+| `assert_is_not(expr1, expr2)` | Passes if `expr1 is not expr2` |
+| `assert_is_none(expr)` | Passes if `expr is None` |
+| `assert_is_not_none(expr)` | Passes if `expr is not None` |
+
+```python
+x = None
+assert_is_none(x)
+
+a = [1, 2]
+b = a
+assert_is(a, b)      # same object in memory
+```
+
+---
+
+### Membership
+
+| Function | Description |
+|---|---|
+| `assert_in(value, iterable)` | Passes if `value in iterable` |
+| `assert_not_in(value, iterable)` | Passes if `value not in iterable` |
+
+```python
+assert_in(3, [1, 2, 3])
+assert_not_in("x", "hello world")
+```
+
+---
+
+### Type Checking
+
+| Function | Description |
+|---|---|
+| `assert_is_instance(value, cls)` | Passes if `isinstance(value, cls)` |
+| `assert_is_not_instance(value, cls)` | Passes if `not isinstance(value, cls)` |
+
+```python
+assert_is_instance(42, int)
+assert_is_not_instance("text", list)
+```
+
+---
+
+### Numeric Comparisons
+
+| Function | Description |
+|---|---|
+| `assert_almost_equal(v1, v2, decimal=7)` | Passes if values are equal when rounded to `decimal` places |
+| `assert_not_almost_equal(v1, v2, decimal)` | Passes if values differ at the given decimal precision |
+| `assert_greater(v1, v2)` | Passes if `v1 > v2` |
+| `assert_greater_equal(v1, v2)` | Passes if `v1 >= v2` |
+| `assert_less(v1, v2)` | Passes if `v1 < v2` |
+| `assert_less_equal(v1, v2)` | Passes if `v1 <= v2` |
+
+```python
+assert_almost_equal(0.1 + 0.2, 0.3)       # floating point safe
+assert_not_almost_equal(3.141, 3.142, decimal=3)
+assert_greater(100, 50)
+assert_less_equal(7, 7)
+```
+
+---
+
+### Regular Expressions
+
+| Function | Description |
+|---|---|
+| `assert_is_valid_regex(expr)` | Passes if `expr` compiles as a valid regex pattern |
+| `assert_regex(text, regex)` | Passes if `regex` matches anywhere in `text` |
+| `assert_not_regex(text, regex)` | Passes if `regex` does NOT match `text` |
+
+```python
+assert_is_valid_regex(r"\d{3}-\d{4}")
+assert_regex("Order #12345", r"\d+")
+assert_not_regex("Hello World", r"\d+")
+```
+
+---
+
+### Warnings
+
+| Function | Description |
+|---|---|
+| `assert_warns(func, expected_warning)` | Passes if calling `func()` triggers the given warning type |
+
+```python
+import warnings
+
+def legacy():
+    warnings.warn("Deprecated!", DeprecationWarning)
+
+assert_warns(legacy, DeprecationWarning)
+```
+
+---
+
+### Collection Assertions
+
+| Function | Description |
+|---|---|
+| `assert_count_equal(iter1, iter2)` | Passes if both iterables have same elements with same counts (order-independent) |
+| `assert_list_equal(list1, list2)` | Passes if both lists are equal (order matters) |
+| `assert_set_equal(set1, set2)` | Passes if both sets are equal |
+| `assert_tuple_equal(t1, t2)` | Passes if both tuples are equal |
+| `assert_dict_equal(d1, d2)` | Passes if both dicts are equal |
+| `assert_multiline_equal(s1, s2)` | Passes if two multiline strings are identical |
+
+```python
+assert_count_equal([1, 2, 2, 3], [3, 2, 1, 2])  # same counts, any order
+assert_list_equal(["a", "b"], ["a", "b"])
+assert_set_equal({"x", "y"}, {"y", "x"})
+assert_dict_equal({"a": 1}, {"a": 1})
+
+assert_multiline_equal("line1\nline2", "line1\nline2")
+```
+
+---
+
+## 📊 Sample Terminal Output
 
 ```
 ------------------------------------------------------------
 
 ✅ PASS   test_addition
-✅ PASS   test_truth
+✅ PASS   test_subtraction
+❌ FAIL   test_this_will_fail
+  ↳ Expected : 2 , but Got : 1
+⏩ SKIP   test_multiplication
+  ↳ not built yet
+🟡 XFAIL  test_known_bug
+  ↳ Expected : 0.3 , but Got : 0.30000000000000004
+✅ PASS   test_raises
+
+============================================================
+
+FAILURE SUMMARY :
+
+test_this_will_fail: Expected : 2 , but Got : 1
+
+============================================================
 
 ------------------------------------------------------------
-Run 2 in 0.00s
-
-2 Passed | 0 Failed | 0 Skipped | 0 XFail | 0 Errors
-
-Success Rate : 100.00%
+Run 6 in 0.00s
+5 Passed | 1 Failed | 1 skipped | 1 xFail | 0 errors
+Success Rate : 83.33%
 ```
 
 ---
 
-# Available Decorators
+## 🗺️ How It All Fits Together
 
-## `@test`
-
-Registers a function as a test.
-
-```python
-@test
-def test_sum():
-    assert_equal(5 + 5, 10)
+```
+Your test file
+     │
+     ├─ @test / @skip / @expect_failure
+     │       decorators.py  ──► _test_registry (list)
+     │
+     ├─ assert_*()
+     │       assertions.py  ──► raises TestFailed on failure
+     │
+     └─ run_all()
+             __init__.py
+                  │
+                  ▼
+             runner.py  ──► iterates _test_registry
+                               │
+                               ├─ catches TestFailed  → FAIL / XFAIL
+                               ├─ catches TestSkipped → SKIP
+                               ├─ catches Exception   → ERROR
+                               └─ no exception        → PASS
+                                        │
+                                        ▼
+                                  Colored terminal report
 ```
 
 ---
 
-## `@skip(reason)`
+## 💡 Tips & Best Practices
 
-Marks a test as skipped.
-
-```python
-@skip("Feature not implemented")
-def test_database():
-    pass
-```
-
-Output
-
-```
-⏩ SKIP test_database — Feature not implemented
-```
+- **Name your test functions starting with `test_`** for clarity — the framework doesn't enforce this, but it's a good convention.
+- **Use `@expect_failure`** for known bugs or incomplete features rather than deleting the test — it keeps the issue visible.
+- **Use `@skip`** with a descriptive reason so teammates know why a test is bypassed.
+- **Group related tests** in separate files inside the `tests/` directory and call `run_all()` at the bottom of each.
+- **Use `assert_almost_equal`** instead of `assert_equal` when comparing floating-point numbers.
 
 ---
 
-## `@expect_failure`
+## 📄 License
 
-Marks a test that is expected to fail.
-
-Useful when developing features that are not complete yet.
-
-```python
-@expect_failure
-def test_future_feature():
-    assert_equal(10, 20)
-```
-
-Output
-
-```
-🟡 XFAIL test_future_feature
-```
-
-If the test unexpectedly passes:
-
-```
-❌ FAIL test_future_feature — Expected to fail but passed
-```
-
----
-
-# Assertions
-
-The framework includes several built-in assertion helpers.
-
----
-
-## assert_equal()
-
-Checks equality.
-
-```python
-assert_equal(actual, expected)
-```
-
-Example
-
-```python
-assert_equal(5 + 5, 10)
-```
-
-Failure
-
-```
-Expected : 10 , but Got : 8
-```
-
----
-
-## assert_not_equal()
-
-Checks inequality.
-
-```python
-assert_not_equal(actual, expected)
-```
-
-Example
-
-```python
-assert_not_equal(5, 10)
-```
-
----
-
-## assert_true()
-
-Checks that a value is truthy.
-
-```python
-assert_true(value)
-```
-
-Example
-
-```python
-assert_true(10 > 5)
-```
-
----
-
-## assert_false()
-
-Checks that a value is false.
-
-```python
-assert_false(value)
-```
-
-Example
-
-```python
-assert_false(False)
-```
-
----
-
-## assert_raises()
-
-Checks that a function raises a specific exception.
-
-Syntax
-
-```python
-assert_raises(ExceptionType, function, *args, **kwargs)
-```
-
-Example
-
-```python
-def divide():
-    return 5 / 0
-
-assert_raises(ZeroDivisionError, divide)
-```
-
----
-
-# Example
-
-```python
-from pyminitest import *
-
-@test
-def test_add():
-    assert_equal(2 + 3, 5)
-
-
-@test
-def test_truth():
-    assert_true(100 > 1)
-
-
-@skip("Not ready")
-def test_database():
-    pass
-
-
-@expect_failure
-def test_future():
-    assert_equal(10, 20)
-
-
-run_all()
-```
-
-Example Output
-
-```
-------------------------------------------------------------
-
-✅ PASS   test_add
-✅ PASS   test_truth
-⏩ SKIP   test_database — Not ready
-🟡 XFAIL  test_future — Expected : 20 , but Got : 10
-
-------------------------------------------------------------
-Run 4 in 0.00s
-
-2 Passed | 0 Failed | 1 Skipped | 1 XFail | 0 Errors
-
-Success Rate : 50.00%
-```
-
----
-
-# Test Statuses
-
-| Status | Meaning |
-|---------|---------|
-| ✅ PASS | Test passed successfully |
-| ❌ FAIL | Assertion failed |
-| ⏩ SKIP | Test skipped |
-| 🟡 XFAIL | Expected failure occurred |
-| 💥 ERROR | Unexpected exception occurred |
-
----
-
-# How It Works
-
-## 1. Test Registration
-
-The `@test` decorator wraps your function and registers it in an internal test registry.
-
----
-
-## 2. Test Discovery
-
-The runner iterates through every registered test.
-
----
-
-## 3. Execution
-
-Each test is executed independently.
-
-If an assertion fails, a `TestFailed` exception is raised.
-
-Unexpected exceptions are reported as errors.
-
----
-
-## 4. Reporting
-
-After all tests finish, the framework prints:
-
-- Passed tests
-- Failed tests
-- Skipped tests
-- Expected failures
-- Errors
-- Total runtime
-- Success rate
-
----
-
-# Technologies Used
-
-- Python 3
-- Decorators
-- Closures
-- functools.wraps
-- Custom Exceptions
-- Object-Oriented Programming
-- ANSI Terminal Colors
-- Standard Library Only
-
----
-
-# Current Limitations
-
-This project intentionally keeps the implementation minimal.
-
-Current limitations include:
-
-- No automatic test discovery from directories
-- No fixtures
-- No parameterized tests
-- No setup/teardown support
-- No parallel execution
-- No HTML or XML reports
-- No command-line interface (CLI)
-
-These features can be added in future versions.
-
----
-
-# Learning Outcomes
-
-Building this project helps you understand:
-
-- How testing frameworks work internally
-- Function decorators
-- Wrapper functions
-- Introspection
-- Exception handling
-- Assertion design
-- Report generation
-- Test lifecycle
-- Python package design
-
----
-
-# Future Improvements
-
-Possible enhancements include:
-
-- Automatic test discovery
-- CLI support
-- Fixtures
-- setup() and teardown()
-- Parameterized tests
-- HTML reports
-- JUnit XML export
-- Test filtering
-- Parallel execution
-- Code coverage integration
-- Plugin system
-
----
-
-# Why Build This Project?
-
-Most developers know how to use testing frameworks.
-
-Far fewer understand how they are implemented.
-
-This project demonstrates knowledge of:
-
-- Python internals
-- Software architecture
-- Clean API design
-- Testing principles
-- Exception-driven control flow
-
-It is an excellent portfolio project for Python developers aiming to showcase intermediate to advanced programming skills.
-
----
-
-# License
-
-This project is released under the MIT License.
-
-Feel free to use, modify, and improve it.
-
----
-
-## Author
-
-**Dawood Afzal**
-
-Built as a learning project to understand how modern Python testing frameworks work internally.
-
+This project is open-source and free to use for learning, personal projects, or as a base for a more feature-rich framework.

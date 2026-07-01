@@ -25,6 +25,10 @@ Each folder in this repository is a completely standalone project.
 
 * **[Automated Email Report Sender](./Phase%201/Projects/Automated%20Email%20Report%20Sender/)** A Python automation tool that reads sales data from a CSV file, analyzes it using **Google Gemini AI**, and emails the generated report directly to a recipient via Gmail.
 
+* **[Python Custom Testing Framework](./Phase%201/Projects/Python_Custom_Testing_Framework/)** A lightweight, decorator-based Python testing framework built from scratch — no third-party dependencies. Write expressive tests with clean syntax, rich assertions, and a beautifully formatted terminal report.
+
+
+
 ## 📂 **(PHASE 2)** Project Directory
 
 ### 📐 Numpy

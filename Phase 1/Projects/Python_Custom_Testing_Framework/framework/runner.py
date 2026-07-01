@@ -30,7 +30,7 @@ class TestRunner():
 
     def _run_one(self , test):
         name = test.__name__
-        if not test._skip == None:
+        if test._skip is not None:
             self.results.append(("SKIP" , name , test._skip))
         else:
             try:
@@ -47,6 +47,8 @@ class TestRunner():
                     self.results.append(("FAIL", name, str(e)))
 
            
+            except TestSkipped as e:
+                self.results.append(("SKIP", name, str(e)))
 
             except Exception as e:
                 self.results.append(("ERROR", name, f"{type(e).__name__}: {e}"))
@@ -87,7 +89,7 @@ class TestRunner():
         print("="*60)
 
         if failed != 0:
-            print(f"{BRIGHT_RED}\nFIALURE SUMMARY : {RESET}\n")
+            print(f"{BRIGHT_RED}\nFAILURE SUMMARY : {RESET}\n")
             for  status , name , msg in self.results:
                 if status == "FAIL":
                     print(f"{name}: {msg}")
@@ -105,6 +107,6 @@ class TestRunner():
         print("-"*60)
         print(f"Run {len(self.results)} in {time:.2f}s")
         print(f"{BRIGHT_GREEN}{passed} Passed {RESET}| {BRIGHT_RED}{failed} Failed {RESET}| {BRIGHT_BLUE}{skipped} skipped {RESET}| {BRIGHT_YELLOW}{xfail} xFail {RESET}| {BRIGHT_RED}{errors} errors{RESET}")
-        percent = passed/len(self.results)*100
+        percent = passed/len(self.results)*100 if self.results else 0.0
         print(f"{BRIGHT_GREEN}Success Rate : {GREY}{percent:.2f}%{RESET}")
         
