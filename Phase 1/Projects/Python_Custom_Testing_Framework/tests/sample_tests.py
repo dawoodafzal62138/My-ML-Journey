@@ -1,10 +1,10 @@
 import unittest
-from framework import (
+from framework import(
     test, skip, expect_failure,
     assert_equal, assert_not_equal,
     assert_true, assert_false,
-    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,  run_all
-)
+    assert_raises, assert_is , assert_is_not, assert_is_not_none , assert_is_none ,assert_is_instance , assert_is_not_instance ,  run_all
+) 
 
 def function_that_return_none():
     return None
@@ -41,15 +41,40 @@ def function_that_return_none():
 # def isnot():
 #     assert_is_not("string" , "string")
 
-@test
-def is_none():
-    result = function_that_return_none()
-    assert_is_none(result)
+# @test
+# def is_none():
+#     result = function_that_return_none()
+#     assert_is_none(result)
+
+# @expect_failure
+# def is_not_none():
+#     result = function_that_return_none()
+#     assert_is_not_none(result)
+
+
+# @test
+# def in_():
+#     a = [1,1,3,4,5,6,7,8,9,10]
+#     assert_in(4 , a)
+
+
+# @test
+# def not_in():
+#     s = "string"
+#     assert_not_in("k" , s)
+
+@test 
+def is_instance():
+    assert_is_instance(12 ,int)
+
 
 @expect_failure
-def is_not_none():
-    result = function_that_return_none()
-    assert_is_not_none(result)
+def is_not_instance():
+    assert_is_not_instance((1,23,4) ,tuple)
+
+
+
+
 
 
 run_all()
