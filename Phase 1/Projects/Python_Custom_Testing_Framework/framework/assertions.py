@@ -68,3 +68,40 @@ def assert_is_instance(value: object , cls: type) -> None:
     if not isinstance(value , cls):
         raise TestFailed(f"Expected {value} to be an instance of {cls.__name__}, but got {type(value).__name__}.")
     
+
+
+def assert_almost_equal(value1 : float , value2 : float , decimal : int = 7) -> None:
+    rounded1 = round(value1 , decimal)
+    rounded2 = round(value2 , decimal)
+    if rounded1 != rounded2 :
+        raise TestFailed(f"Expected {repr(value1)} to be almost equal to {repr(value2)}.")
+    
+
+def assert_not_almost_equal(value1 : float , value2 : float , decimal : int) -> None:
+    rounded1 = round(value1 , decimal)
+    rounded2 = round(value2 , decimal)
+    if rounded1 == rounded2 :
+        raise TestFailed(f"Expected {repr(value1)} to not be almost equal to {repr(value2)}.")
+ 
+    
+def assert_greater(value1 : int , value2 : int) -> None:
+    if not value1  > value2:
+        raise TestFailed(f"Expected {value1} to be greater than {value2}.")
+    
+
+def assert_less(value1 : int , value2 : int) -> None:
+    if not value1 < value2:
+        raise TestFailed(f"Expected {value1} to be less than {value2}.")
+    
+
+
+def assert_greater_equal(value1 : int , value2 : int) -> None:
+    if not value1 >= value2:
+        raise TestFailed(f"Expected {value1} to be greater than or equal to {value2}.")
+    
+
+
+def assert_less_equal(value1 : int , value2 : int) -> None:
+    if not value1 <= value2:
+        raise TestFailed(f"Expected {value1} to be less than or equal to {value2}.")
+
