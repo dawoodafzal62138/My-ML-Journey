@@ -55,7 +55,12 @@ class Stats:
         return (sample_mean - margin, sample_mean + margin)
 
 
-
+    def sample_variance_std(self,  array : NDArray) -> float:
+        n = 30
+        sample_array =  random.choices(array , k = n)
+        sample_var = self.variance(sample_array)
+        sample_std = self.std(sample_array)
+        return sample_var , sample_std
 
 
 
