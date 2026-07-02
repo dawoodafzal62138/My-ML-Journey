@@ -51,9 +51,8 @@ class Stats:
         z = 1.96
         sample_mean = self.mean(sample_array)
         sample_std = self.std(sample_array)
-        confidence_upper = sample_mean + z * (sample_std/np.sqrt(n))
-        confidence_lower = sample_mean - z * (sample_std/np.sqrt(n))
-        return (confidence_lower , confidence_upper)
+        margin = z * (sample_std / np.sqrt(n))
+        return (sample_mean - margin, sample_mean + margin)
 
 
 
