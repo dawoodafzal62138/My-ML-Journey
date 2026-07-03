@@ -1,19 +1,21 @@
 from stat import * 
-
-
-
-
 import numpy as np
-from stats import Stats      # Import your Stats class
+from advance_stats import *
+
+
+
+
 
 stats = Stats()
+adv = AdvanceStats()
 
-RESET = "\033[0m"
-CYAN = "\033[96m"
-GREEN = "\033[92m"
-YELLOW = "\033[93m"
+RESET   = "\033[0m"
+BLUE    = "\033[94m"
+CYAN    = "\033[96m"
+GREEN   = "\033[92m"
+YELLOW  = "\033[93m"
 MAGENTA = "\033[95m"
-BLUE = "\033[94m"
+
 
 
 np.random.seed(42)
@@ -41,37 +43,79 @@ distributions = {
 }
 
 
+
+
+# ---------------- COLORS ---------------- #
+
 def line():
-    print(f"{BLUE}{'='*80}{RESET}")
+    print(f"{BLUE}{'='*95}{RESET}")
 
-line()
-print(f"{MAGENTA}{'STATISTICAL FUNCTIONS TEST':^80}{RESET}")
-line()
+def section(title):
+    print()
+    line()
+    print(f"{MAGENTA}{title:^95}{RESET}")
+    line()
 
+# -------------------------------------------------
+# Analyze every distribution
+# -------------------------------------------------
 for name, data in distributions.items():
 
-    skew_value, skew_text = stats.skewness(data)
-    kurt_value, kurt_text = stats.kurtosis(data)
+    weights = np.random.randint(1, 6, len(data))
+
+    section(name.upper())
+
+    # ---------------- BASIC ---------------- #
+    print(f"{GREEN}Mean                 :{RESET} {stats.mean(data):.4f}")
+    print(f"{GREEN}Median               :{RESET} {stats.median(data):.4f}")
+    print(f"{GREEN}Mode                 :{RESET} {stats.mode(data):.4f}")
+    print(f"{GREEN}Variance             :{RESET} {stats.variance(data):.4f}")
+    print(f"{GREEN}Standard Deviation   :{RESET} {stats.std(data):.4f}")
+
+    sample_var, sample_std = stats.sample_variance_std(data)
+    print(f"{GREEN}Sample Variance      :{RESET} {sample_var:.4f}")
+    print(f"{GREEN}Sample Std Dev       :{RESET} {sample_std:.4f}")
+
+    skew, skew_text = stats.skewness(data)
+    print(f"{YELLOW}Skewness             :{RESET} {skew:.4f} ({skew_text})")
+
+    kurt, kurt_text = stats.kurtosis(data)
+    print(f"{YELLOW}Kurtosis             :{RESET} {kurt:.4f} ({kurt_text})")
+
     ci = stats.confidence_interval(data)
+    print(f"{GREEN}95% Confidence Int.  :{RESET} [{ci[0]:.4f}, {ci[1]:.4f}]")
 
-    print(f"\n{CYAN}{name:^80}{RESET}")
-    print("-"*80)
+    # ---------------- ADVANCED ---------------- #
+    print()
+    print(f"{CYAN}{'-'*35} Advanced Statistics {'-'*35}{RESET}")
 
-    print(f"{GREEN}Mean                :{RESET} {stats.mean(data):10.4f}")
-    print(f"{GREEN}Median              :{RESET} {stats.median(data):10.4f}")
-    print(f"{GREEN}Mode                :{RESET} {stats.mode(data):10.4f}")
-    print(f"{GREEN}Standard Deviation  :{RESET} {stats.std(data):10.4f}")
-    print(f"{GREEN}Variance            :{RESET} {stats.variance(data):10.4f}")
+    cov, relation = adv.covariance(data, data)
+    print(f"{CYAN}Covariance           :{RESET} {cov:.4f}")
+    print(f"{CYAN}Relationship         :{RESET} {relation}")
 
-    print(f"{YELLOW}Skewness            :{RESET} {skew_value:10.2f}   ({skew_text})")
-    print(f"{YELLOW}Kurtosis            :{RESET} {kurt_value:10.2f}   ({kurt_text})")
+    print(f"{CYAN}25th Percentile      :{RESET} {adv.percentile_(data,25):.4f}")
+    print(f"{CYAN}50th Percentile      :{RESET} {adv.percentile_(data,50):.4f}")
+    print(f"{CYAN}75th Percentile      :{RESET} {adv.percentile_(data,75):.4f}")
 
-    print(
-        f"{GREEN}95% Confidence Int. :{RESET} "
-        f"\t[{ci[0]:.4f}, {ci[1]:.4f}]"
-    )
+    q = adv.quartiles(data)
+
+    print(f"{CYAN}Quartiles{RESET}")
+    print(f"    Minimum          : {q[0]:.4f}")
+    print(f"    Q1               : {q[1]:.4f}")
+    print(f"    Median           : {q[2]:.4f}")
+    print(f"    Q3               : {q[3]:.4f}")
+    print(f"    Maximum          : {q[4]:.4f}")
+
+    print(f"{CYAN}Interquartile Range  :{RESET} {adv.interquantile_range(data):.4f}")
+
+    print(f"{CYAN}Weighted Mean        :{RESET} {adv.weighted_mean(data, weights):.4f}")
+
+    normalized = adv.min_max_normalization(data)
+
+    print(f"{CYAN}Min-Max Normalization (First 10){RESET}")
+    print("   ", np.round(normalized[:10], 4))
 
 line()
-print(f"{MAGENTA}{'ALL TESTS COMPLETED':^80}{RESET}")
+print(f"{MAGENTA}{'ALL DISTRIBUTIONS TESTED SUCCESSFULLY':^95}{RESET}")
 line()
 
