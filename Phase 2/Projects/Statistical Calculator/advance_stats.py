@@ -1,4 +1,4 @@
-import numpy
+
 from numpy.typing import NDArray
 from stats import *
 
@@ -56,8 +56,3 @@ class AdvanceStats:
         return weighted_mean_
 
 
-x = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-y = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-print(x.ndim)
-ads= AdvanceStats()
-print(ads.weighted_mean(x , y))

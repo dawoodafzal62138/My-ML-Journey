@@ -1,41 +1,63 @@
-# 📊 Statistical Calculator
+# 📊 Statistical Calculator 
 
-A lightweight Python statistics library built from scratch using **NumPy**.  
-PyStats provides common descriptive statistical functions along with distribution analysis utilities such as **skewness**, **kurtosis**, and **95% confidence intervals**.
+A lightweight yet powerful **Python statistics library** built from scratch using **NumPy**.
 
-The project also includes a colorful terminal demo that evaluates the library on several probability distributions.
+Statistical Calculator  provides essential descriptive statistics along with advanced statistical analysis utilities such as **covariance**, **percentiles**, **quartiles**, **interquartile range (IQR)**, **weighted mean**, **min-max normalization**, **distribution analysis**, and **95% confidence intervals**.
 
----
-
-## ✨ Features
-
-- 📈 Mean
-- 📊 Median
-- 📌 Mode
-- 📉 Standard Deviation
-- 📐 Variance
-- ↗️ Skewness Detection
-- 🔔 Kurtosis Detection
-- 🎯 95% Confidence Interval
-- 🎨 Beautiful colored terminal output
-- 🧪 Tested on multiple probability distributions
+The project also includes a colorful terminal demonstration that evaluates the library on several probability distributions.
 
 ---
 
-## Project Structure
+# ✨ Features
 
-```
-PyStats/
+## 📈 Basic Statistics
+
+- Mean
+- Median
+- Mode
+- Population Variance
+- Population Standard Deviation
+- Sample Variance
+- Sample Standard Deviation
+
+## 📊 Distribution Analysis
+
+- Skewness
+- Kurtosis
+- 95% Confidence Interval
+
+## 📚 Advanced Statistics
+
+- Covariance
+- Percentiles
+- Quartiles
+- Interquartile Range (IQR)
+- Weighted Mean
+- Min-Max Normalization
+
+## 🎨 Extras
+
+- Beautiful terminal output with colors
+- Tested on multiple probability distributions
+- Easy-to-understand implementation
+- Built entirely using NumPy
+
+---
+
+# 📂 Project Structure
+
+```text
+Statistical Calculator /
 │
-├── stats.py        # Statistics library
-├── main.py         # Demonstration script
+├── stats.py              # Core statistical functions
+├── advance_stats.py      # Advanced statistical functions
+├── main.py               # Demonstration script
 └── README.md
 ```
 
 ---
 
-## Installation
-
+# ⚙️ Installation
 
 
 Install dependencies
@@ -46,29 +68,45 @@ pip install numpy
 
 ---
 
-## Quick Start
+# 🚀 Quick Start
 
 ```python
 import numpy as np
+
 from stats import Stats
+from advance_stats import AdvanceStats
 
 stats = Stats()
+adv = AdvanceStats()
 
-data = np.array([10, 15, 18, 20, 25])
+data = np.array([10,20,30,40,50])
+weights = np.array([1,2,3,4,5])
 
 print(stats.mean(data))
 print(stats.median(data))
 print(stats.mode(data))
-print(stats.std(data))
 print(stats.variance(data))
+print(stats.std(data))
+
+print(stats.sample_variance_std(data))
+
 print(stats.skewness(data))
 print(stats.kurtosis(data))
 print(stats.confidence_interval(data))
+
+print(adv.covariance(data,data))
+print(adv.percentile_(data,75))
+print(adv.quartiles(data))
+print(adv.interquantile_range(data))
+print(adv.weighted_mean(data,weights))
+print(adv.min_max_normalization(data))
 ```
 
 ---
 
-# Available Functions
+# 📖 Available Functions
+
+---
 
 ## Mean
 
@@ -121,22 +159,58 @@ Example
 
 ---
 
-## Standard Deviation
+## Population Standard Deviation
 
-Measures how spread out the data is.
+Measures the spread of the data.
 
 ```python
 stats.std(array)
 ```
 
+Example
+
+```python
+>>> stats.std(np.array([1,2,3,4,5]))
+1.4142
+```
+
 ---
 
-## Variance
+## Population Variance
 
 Returns the variance of the dataset.
 
 ```python
 stats.variance(array)
+```
+
+Example
+
+```python
+>>> stats.variance(np.array([1,2,3,4,5]))
+2.0
+```
+
+---
+
+## Sample Variance & Sample Standard Deviation
+
+Randomly samples 30 observations and computes sample variance and sample standard deviation.
+
+```python
+stats.sample_variance_std(array)
+```
+
+Returns
+
+```python
+(sample_variance, sample_standard_deviation)
+```
+
+Example
+
+```python
+(2.35, 1.53)
 ```
 
 ---
@@ -152,7 +226,7 @@ stats.skewness(array)
 Returns
 
 ```python
-(skew_value, description)
+(skewness_value, description)
 ```
 
 Possible descriptions
@@ -164,14 +238,14 @@ Possible descriptions
 Example
 
 ```python
-(1.25, "Positively Skewed")
+(0.87, "Positively Skewed")
 ```
 
 ---
 
 ## Kurtosis
 
-Measures the heaviness of the tails.
+Measures the heaviness of a distribution's tails.
 
 ```python
 stats.kurtosis(array)
@@ -192,14 +266,14 @@ Possible descriptions
 Example
 
 ```python
-(4.12, "Leptokurtic - Heavy tails, sharp peak")
+(3.74, "Leptokurtic - Heavy tails, sharp peak")
 ```
 
 ---
 
-## Confidence Interval
+## 95% Confidence Interval
 
-Computes a **95% confidence interval** from a random sample of 30 observations.
+Computes the confidence interval using a random sample of 30 observations.
 
 ```python
 stats.confidence_interval(array)
@@ -214,61 +288,182 @@ Returns
 Example
 
 ```python
-(12.45, 15.87)
+(12.54, 15.82)
 ```
 
 ---
 
-# Demonstration
+# 📚 Advanced Statistics
 
-Running
+---
+
+## Covariance
+
+Measures how two variables change together.
+
+```python
+adv.covariance(array1, array2)
+```
+
+Returns
+
+```python
+(covariance_value, relationship)
+```
+
+Possible relationships
+
+- Positive Covariance
+- Negative Covariance
+- Zero Covariance
+
+Example
+
+```python
+(5.81, "Positive Covariance")
+```
+
+---
+
+## Percentile
+
+Returns the specified percentile.
+
+```python
+adv.percentile_(array, percentile)
+```
+
+Example
+
+```python
+>>> adv.percentile_(data,75)
+42.5
+```
+
+---
+
+## Quartiles
+
+Returns the five-number summary.
+
+```python
+adv.quartiles(array)
+```
+
+Returns
+
+```python
+(minimum, Q1, median, Q3, maximum)
+```
+
+Example
+
+```python
+(10,20,30,40,50)
+```
+
+---
+
+## Interquartile Range (IQR)
+
+Returns the spread of the middle 50% of the data.
+
+```python
+adv.interquantile_range(array)
+```
+
+Example
+
+```python
+20
+```
+
+---
+
+## Weighted Mean
+
+Computes the weighted average of observations.
+
+```python
+weights = np.array([1,2,3,4,5])
+
+adv.weighted_mean(data,weights)
+```
+
+Example
+
+```python
+36.67
+```
+
+---
+
+## Min-Max Normalization
+
+Scales values between **0** and **1**.
+
+```python
+adv.min_max_normalization(array)
+```
+
+Example
+
+```python
+array([0.00,0.25,0.50,0.75,1.00])
+```
+
+---
+
+# 🧪 Demonstration
+
+Run
 
 ```bash
 python main.py
 ```
 
-tests the library on several probability distributions.
+The program automatically evaluates the library on multiple probability distributions.
 
 Included distributions
 
-- Normal
-- Uniform
-- Exponential
-- Binomial
-- Poisson
-- Chi-Square
-- Gamma
-- Beta
-- Log-Normal
-- Triangular
+- Normal Distribution
+- Uniform Distribution
+- Exponential Distribution
+- Binomial Distribution
+- Poisson Distribution
+- Chi-Square Distribution
+- Gamma Distribution
+- Beta Distribution
+- Log-Normal Distribution
+- Triangular Distribution
 
-Example output
+For every distribution it calculates
 
-```
-================================================================================
-                         STATISTICAL FUNCTIONS TEST
-================================================================================
-
-                         Normal Distribution
---------------------------------------------------------------------------------
-Mean                :     0.0193
-Median              :     0.0253
-Mode                :    -3.2413
-Standard Deviation  :     0.9787
-Variance            :     0.9578
-Skewness            :      0.12 (Positively Skewed)
-Kurtosis            :      2.96 (Platykurtic)
-95% Confidence Int. : [-0.3514, 0.3768]
-```
+- Mean
+- Median
+- Mode
+- Variance
+- Standard Deviation
+- Sample Variance
+- Sample Standard Deviation
+- Skewness
+- Kurtosis
+- Confidence Interval
+- Covariance
+- Percentiles
+- Quartiles
+- Interquartile Range
+- Weighted Mean
+- Min-Max Normalization
 
 ---
 
-# Requirements
+# 📦 Requirements
 
 - Python 3.10+
 - NumPy
 
-Install
+Install dependencies
 
 ```bash
 pip install numpy
@@ -276,35 +471,15 @@ pip install numpy
 
 ---
 
-# Future Improvements
-
-- Sample variance
-- Sample standard deviation
-- Covariance
-- Correlation coefficient
-- Percentiles
-- Quartiles
-- Interquartile Range (IQR)
-- Z-score
-- Min-Max normalization
-- Robust mode implementation
-- Weighted mean
-- Bootstrap confidence intervals
-- Hypothesis testing
-- Linear regression utilities
-- Visualization using Matplotlib
-- Unit tests with pytest
-
----
 
 
 
-# License
+# 📄 License
 
 This project is licensed under the MIT License.
 
 ---
 
-## Author
+# 👨‍💻 Author
 
 **Dawood Afzal**
