@@ -6,7 +6,7 @@ stats = Stats()
 
 class AdvanceStats:
 
-    def population_covariance(self, array1 : NDArray , array2 : NDArray ) -> any:
+    def covariance(self, array1 : NDArray , array2 : NDArray ) -> any:
         if len(array1) != len(array2) : 
             return "Both Arrays must be of same size"
         n = len(array1)
@@ -21,12 +21,43 @@ class AdvanceStats:
         else: 
             return cov , "Zero Covariance"
 
+    def percentile_(self , array : NDArray , percentile: int) -> float:
+        array = sorted(array)
+        L = ((len(array) / 100) * percentile )
+        print(L)
+        if not L.is_integer():
+            value = (array[int(L)-1] + array[int(L)]) / 2
+        else:
+            value = array[int(L) -1] 
+        return value         
+
+    def interquantile_range(self , array : NDArray) -> float:
+        q75 = self.percentile_(array , 75)
+        q25 = self.percentile_(array , 25)
+        return q75 - q25
+
+    def quartiles(self, array: NDArray) -> tuple:
+        array = sorted(array)
+        min_  = array[0]
+        q1    = self.percentile_(array, 25)
+        q2    = self.percentile_(array, 50)
+        q3    = self.percentile_(array, 75)
+        max_  = array[-1]
+        return min_, q1, q2, q3, max_
+
+    def min_max_normalization(self , array : NDArray) -> NDArray:
+        return (array - np.min(array)) / (np.max(array) - np.min(array))
+
+    def weighted_mean(self , array : NDArray , weights : NDArray) -> any:
+        if len(array) != len(weights):
+            return f"Both array and weights must be of same length"
+    
+        weighted_mean_ = np.sum((array * weights ))/ np.sum(weights)
+        return weighted_mean_
 
 
-
-
-x = [1, 2, 3, 4, 5]
-y = [4, 1, 5, 2, 3]
-
+x = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+y = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+print(x.ndim)
 ads= AdvanceStats()
-print(ads.population_covariance(x , y))
+print(ads.weighted_mean(x , y))
