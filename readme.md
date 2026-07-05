@@ -36,3 +36,5 @@ Each folder in this repository is a completely standalone project.
 * **[Image Processor Without Libraries](./Phase%202/Projects/Image%20Processor%20Without%20Libraries/)** The project demonstrates how to perform common image processing operations — brightness, grayscale, contrast, and blur — using only `numpy` and `PIL`, without relying on dedicated image processing libraries like OpenCV or scikit-image.
 
 * **[Statistical Calculator](./Phase%202/Projects/Statistical%20Calculator/)** A lightweight yet powerful **Python statistics library** built from scratch using **NumPy**.
+
+* **[Linear Regression from scratch ](./Phase%202/Projects/Linear%20Regression%20from%20scratch/)** A pure NumPy implementation of linear regression — no sklearn, no shortcuts. Built to understand what happens under the hood when a machine learning library fits a line to data.
