@@ -3,7 +3,7 @@ from numpy.typing import NDArray
 
 
 
-def multiply_step_by_step(matrix1 : NDArray , matrix2: NDArray):
+def multiplication(matrix1 : NDArray , matrix2: NDArray):
     if not isinstance(matrix1, np.ndarray) or not isinstance(matrix2, np.ndarray):
         return "Inputs must be NumPy arrays."
     if matrix1.size == 0 or matrix2.size == 0:
@@ -63,18 +63,6 @@ def transpose(matrix1 : NDArray):
     return result
 
 
-
-a = np.array([[1,2,3],
-              [4,5,6],
-              [7,8,9]])
-
-print(transpose(a))
+# TO be continued .....
 
 
-
-def inverse_step_by_step(matrix1 : NDArray , matrix2):
-    pass
-
-
-def get_determinent(matrix1 : NDArray , matrix2):
-    pass
