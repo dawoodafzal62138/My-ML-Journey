@@ -40,3 +40,6 @@ Each folder in this repository is a completely standalone project.
 * **[Matrix Operation from Scratch](./Phase%202/Projects/Matrix%20Operation%20from%20Scratch/)** A beginner-friendly implementation of fundamental matrix operations **from scratch** using only **NumPy arrays** and Python loops.
 
 * **[Linear Regression from scratch ](./Phase%202/Projects/Linear%20Regression%20from%20scratch/)** A pure NumPy implementation of linear regression — no sklearn, no shortcuts. Built to understand what happens under the hood when a machine learning library fits a line to data.
+
+* **[Dice Simulation ](./Phase%202/Projects/Dice%20Simulation/)** This project is a Python-based simulation that demonstrates the Law of Large Numbers using single and multiple dice rolls.
+
