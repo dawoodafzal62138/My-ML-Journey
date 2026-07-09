@@ -46,3 +46,5 @@ Each folder in this repository is a completely standalone project.
 * **[Dice Simulation ](./Phase%202/Projects/Dice%20Simulation/)** This project is a Python-based simulation that demonstrates the Law of Large Numbers using single and multiple dice rolls.
 
 * **[Random Walk Simulation ](./Phase%202/Projects/Random%20Walk%20Simulation/)** A comprehensive Python project that demonstrates **Random Walks** in **1D**, **2D**, and **3D** using **NumPy** and **Matplotlib**. This project explores one of the most fundamental concepts in probability through interactive simulations and visualizations.
+
+* **[Core Vectorization Operations ](./Phase%202/Projects/Core%20Vectorized%20Operations/main.ipynb)** A beginner-friendly implementation of essential Machine Learning operations Activation Functions(Sigmoid , Relu , Softmax) ,Distance Metrics (L2 Distance ,  Cosine Similarity),  One-Hot Encoding ,Batch Normalization using **NumPy** only 
