@@ -2,6 +2,8 @@ from PIL import Image
 import numpy as np
 from numba import njit, prange
 import time
+from decimal import Decimal, getcontext
+getcontext().prec =25
 
 
 @njit(parallel=True, fastmath=True)
@@ -77,8 +79,8 @@ def create_zoom_animation(
     y_min = -1.5
     y_max = 1.5
 
-    center_x = -0.743643887037151
-    center_y = 0.131825904205330
+    center_x = Decimal("-0.0875937321")
+    center_y =Decimal(" 0.6550902802")
 
     max_iterations = 500
 
