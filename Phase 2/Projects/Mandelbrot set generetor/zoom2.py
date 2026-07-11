@@ -117,7 +117,7 @@ start = time.perf_counter()
 create_zoom_animation(
     1920,
     1080,
-    total_frames=1,
+    total_frames=1000
 )
 
 end = time.perf_counter()
