@@ -14,7 +14,6 @@ class gui:
             inputdialog = CTkInputDialog(title="GET GEMINI API KEY" , text="Enter your Gemini API Key")
             self.__api_key = inputdialog.get_input()
 
-
         self.chat_session = self.setup_chat()
         self.main_window()
         self.trigger_initial_message()

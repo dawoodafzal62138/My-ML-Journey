@@ -1,5 +1,8 @@
 No,Name,Type1,Type2,Height,Weight,Legendary
 1,Bulbasaur,Grass,Poison,0.7,6.9,0
+1,Bulbasaur,Grass,Poison,0.7,6.9,0
+1,Bulbasaur,Grass,Poison,0.7,6.9,0
+1,Bulbasaur,Grass,Poison,0.7,6.9,0
 2,Ivysaur,Grass,Poison,1,13,0
 3,Venusaur,Grass,Poison,2,100,0
 4,Charmander,Fire,,0.6,8.5,0
@@ -94,6 +97,12 @@ No,Name,Type1,Type2,Height,Weight,Legendary
 93,Haunter,Ghost,Poison,1.6,0.1,0
 94,Gengar,Ghost,Poison,1.5,40.5,0
 95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
+95,Onix,Rock,Ground,8.8,210,0
 96,Drowzee,Psychic,,1,32.4,0
 97,Hypno,Psychic,,1.6,75.6,0
 98,Krabby,Water,,0.4,6.5,0
@@ -122,6 +131,13 @@ No,Name,Type1,Type2,Height,Weight,Legendary
 121,Starmie,Water,Psychic,1.1,80,0
 122,Mr. Mime,Psychic,Fairy,1.3,54.5,0
 123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
+123,Scyther,Bug,Flying,1.5,56,0
 124,Jynx,Ice,Psychic,1.4,40.6,0
 125,Electabuzz,Electric,,1.1,30,0
 126,Magmar,Fire,,1.3,44.5,0
@@ -148,4 +164,11 @@ No,Name,Type1,Type2,Height,Weight,Legendary
 147,Dratini,Dragon,,1.8,3.3,0
 148,Dragonair,Dragon,,4,16.5,0
 149,Dragonite,Dragon,Flying,2.2,210,0
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
+150,Mewtwo,Psychic,,2,122,1
 150,Mewtwo,Psychic,,2,122,1
