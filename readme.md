@@ -49,7 +49,7 @@ Each folder in this repository is a completely standalone project.
 
 * **[Core Vectorization Operations ](./Phase%202/Projects/Core%20Vectorized%20Operations/main.ipynb)** A beginner-friendly implementation of essential Machine Learning operations Activation Functions(Sigmoid , Relu , Softmax) ,Distance Metrics (L2 Distance ,  Cosine Similarity),  One-Hot Encoding ,Batch Normalization using **NumPy** only 
 
-* **[Mandelbrot Set Generator](./Phase%202/Projects/Mandelbrot%20set%20generetor/main.ipynb)**A high-performance **Mandelbrot Set Generator** built with **Python**, **NumPy**, **Numba**, and **Pillow**. This project generates beautiful Mandelbrot fractal images and supports creating smooth infinite zoom animations by rendering approximately thousand of high-resolution frames.
+* **[Mandelbrot Set Generator](./Phase%202/Projects/Mandelbrot%20set%20generetor/main.ipynb)** A high-performance **Mandelbrot Set Generator** built with **Python**, **NumPy**, **Numba**, and **Pillow**. This project generates beautiful Mandelbrot fractal images and supports creating smooth infinite zoom animations by rendering approximately thousand of high-resolution frames.
 
 ## 📂 **(PHASE 2)** Project Directory
 
