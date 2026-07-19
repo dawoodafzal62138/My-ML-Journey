@@ -53,8 +53,10 @@ Each folder in this repository is a completely standalone project.
 
 * **[Monte Carlo Pi Estimator](./Phase%202/Projects/Monte%20carlo%20pi%20estimator/main.ipynb)** Estimate the value of **π (Pi)** using the **Monte Carlo method** and **NumPy vectorization**. 
 
+* **[Stock Return Risk Analyzer](./Phase%202/Projects/Stock%20Return%20Risk%20Analyzer/main.ipynb)** A beginner-friendly **NumPy** project that analyzes the historical performance of multiple stocks using fundamental concepts from quantitative finance.
+
 ## 📂 **(PHASE 2)** Project Directory
 
 ### 🐼 Pandas
 
-* **[Pandas Introduction](./Phase%203/Projects/Pandas%20Introduction/pandas_intro.ipynb)** This notebook serves as a comprehensive guide to Pandas, covering some basics and is not completed yet.
+* **[Pandas Introduction](./Phase%203/Projects/Pandas%20Introduction/pandas_intro.ipynb)** This notebook serves as a comprehensive guide to Pandas, covering some basics and is not completed yet.`
