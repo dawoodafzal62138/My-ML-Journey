@@ -5,6 +5,9 @@ import base64
 import pathlib
 import json
 
+
+
+
 SCRIPT_DIR = pathlib.Path(__file__).parent.resolve()
 FILE_PATH = SCRIPT_DIR / "password.json"
 
@@ -88,7 +91,7 @@ class password_manager:
         else:
             print("This account doesn't Exists ! ")
 
-
+# 
 
 path=FILE_PATH
 
@@ -210,3 +213,7 @@ if __name__ == "__main__":
 
 
 
+def add(a:int):
+    return a
+
+add()
