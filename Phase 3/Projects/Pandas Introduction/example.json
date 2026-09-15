@@ -1,0 +1,21 @@
+{
+    "name":{
+        "0":"Mudassir",
+        "1":"Kaif",
+        "2":"Hishu"
+    },
+    "Hobby":{
+        "0":[
+            "Guitar",
+            "Music"
+        ],
+        "1":[
+            "Book Reading",
+            "Soccer"
+        ],
+        "2":[
+            "Movies",
+            "Soccer"
+        ]
+    }
+}
